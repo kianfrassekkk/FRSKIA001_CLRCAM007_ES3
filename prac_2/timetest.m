@@ -4,13 +4,13 @@ function [t_user,t_inbulit ] = timetest(size)
 
     tic
     for i = 1:size 
-        X(:,1) = BubbleSort(X(:,1));
+        X(:,i) = BubbleSort(X(:,i));
     end 
     t_user = toc();
 
     tic
     for i = 1:size 
-        X(:,1) = sort(X(:,1));
+        X(:,i) = sort(X(:,i));
     end 
     t_inbulit = toc();
     
