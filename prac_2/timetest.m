@@ -1,6 +1,7 @@
 function [t_user,t_inbulit ] = timetest(size)
     
     X=rand(size, size);
+    Y=X
 
     tic
     for i = 1:size 
@@ -10,7 +11,7 @@ function [t_user,t_inbulit ] = timetest(size)
 
     tic
     for i = 1:size 
-        X(:,i) = sort(X(:,i));
+        Y(:,i) = sort(Y(:,i));
     end 
     t_inbulit = toc();
     
