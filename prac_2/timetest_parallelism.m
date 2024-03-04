@@ -11,7 +11,6 @@ spmd
     end
 end
 t_user = toc();
-p.delete;
 
 display("Time tacken by the parallelism bubble sort function was " + t_user )
 

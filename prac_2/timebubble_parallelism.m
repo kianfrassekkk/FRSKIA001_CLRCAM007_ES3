@@ -2,9 +2,6 @@ function t_user = timebubble_parallelism(size)
 
 X=rand(size, size);
 
-delete(gcp('nocreate'));
-p = parpool('Processes', 4);
-
 tic
 spmd
     myStart = (spmdIndex - 1) * 25 + 1;
@@ -14,7 +11,6 @@ spmd
     end
 end
 t_user = toc();
-p.delete;
 
 display("Time tacken by the parallelism bubble sort function was " + t_user )
 
