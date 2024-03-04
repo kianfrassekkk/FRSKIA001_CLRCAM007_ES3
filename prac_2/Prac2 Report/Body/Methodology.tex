@@ -1,0 +1,15 @@
+\section{Methodology of Part 2}
+
+\subsection{Question A}
+Create a bubble sort function that can sort an array of randomised values.
+The function will be used to sort the columns of a 100x100 matrix.
+
+\subsection{Question B}
+Using the bubble sort function created in the previous question, test it against the inbuilt \MATLAB sort function.
+The testing will be conducted on square matrices of sizes 100, 200, 500, 1000, 10000 and calculate the speed up from the user created function to \MATLAB's inbuilt function.
+It is expected that the inbuilt function should be faster for all sizes, and the speed up should increase as the size goes up.
+
+\subsection{Question C}
+Using \MATLAB parallelism to create a new bubble sort function which using explicit parallelism using a 'parfor' or 'spmd' block
+The testing will be conducted on square matrices of sizes 100 and 5000 and calculate the speed up from the user created function to \MATLAB's inbuilt function
+It is expected that the inbuilt function should be faster for all sizes, but the explicit parallelism bubble sort should be faster than the user created bubble sort without parallelism.

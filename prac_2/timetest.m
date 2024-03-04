@@ -1,7 +1,7 @@
 function [t_user,t_inbulit ] = timetest(size)
     
     X=rand(size, size);
-    Y=X
+    Y=X;
 
     tic
     for i = 1:size 
