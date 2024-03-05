@@ -99,16 +99,7 @@ This means that the bubble sort function has a big O notation of $O(n^2)$, while
 This means that the inbuilt sort function will be faster than the bubble sort function for all sizes.
 However, the time difference will be more pronounced as the size of the matrix increases.
 
-The speed up has a big O notation of $O(n^2/\log(n))$ which is $O(n/\log(n))$.
-This means that the speed up will increase as the size of the matrix increases as shown in the graph below.
-
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\columnwidth]{Figures/speed_up_big n notation}
-    \caption{speed up big O notation}
-    \label{fig:noPar}
-\end{figure}
+Since the time taken by the BubbleSort algorithm increases at a faster rate than the inbuilt sort function, the speed up will increase as the size of the matrix increases.
 
 \subsection{Question C}
 The code to test the parallelism  user function is shown below.
