@@ -1,9 +1,10 @@
 \section{Introduction}
-This report details an investigation into \MATLAB's Parallel Computing Toolkit
+This report details an investigation into \MATLAB's Parallel Computing Toolkit 
 
 \subsection{Part 1 Question A}
 No, the spmd block does not necessarily parallelize code in the GPU.
 The spmd block or Run Single Programs on Multiple Data Sets is used to parallelize code across multiple workers in a parallel pool but not specifically the GPU. To use a GPU to process code you would use the matlab functions gpuArray() function garrayfun() will force the code to use the GPU.
 
 \subsection{Part 1 Question B}
-MISSSIIInG
+Demonstrate the use and effect with regards to speed of parallelization through spmd blocks and their labIndex to count the number of 1s in a 100 × 100 array.
+It is expected that that the parallelization process will faster.
