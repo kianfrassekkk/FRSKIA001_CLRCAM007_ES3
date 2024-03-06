@@ -97,9 +97,7 @@ The results from the tests are shown in the table below
 These results are logical because the inbuilt sort function uses the Quick Sort algorithm. 
 This means that the bubble sort function has a big O notation of $O(n^2)$, while the inbuilt sort function has a big O notation of $O(n\log(n))$ in most cases.
 This means that the inbuilt sort function will be faster than the bubble sort function for all sizes.
-However, the time difference will be more pronounced as the size of the matrix increases.
-
-Since the time taken by the BubbleSort algorithm increases at a faster rate than the inbuilt sort function, the speed up will increase as the size of the matrix increases.
+However, the time difference will be more pronounced as the size of the matrix increases since the time taken by the BubbleSort algorithm increases at a faster rate than the inbuilt sort function.
 
 \subsection{Question C}
 The code to test the parallelism  user function is shown below.
@@ -164,8 +162,9 @@ The results from the tests are shown in the table below
  \label{fig:expPar}
 \end{figure}
 
-The results show that the sort function is faster than the parallelism bubble sort function.
+The results show that the inbuilt sort function is faster than the parallelism bubble sort function.
 This is because when the parallelize BubbleSort run on a nxn matrix the big O notation is $O(n×(n^2/p))$ where p is the number of workers in the parallel pool. 
 The inbuilt sort function has a big O notation of $O(n×(n*log(n)))$.(There is an extra n because every column need to be sorted).
 
-It makes sense for the speed up to slow down as the size of the matrix increases form 100 to 5000 as building the SPMD function takes time. this will hav a more noticeable effect lower-sized arrays.
+It makes sense for the speed up to slow down as the size of the matrix increases form 100 to 5000 as building the SPMD function has an overhead.
+This overhead will have a more noticeable effect lower-sized arrays.

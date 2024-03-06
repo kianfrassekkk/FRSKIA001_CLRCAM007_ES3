@@ -6,5 +6,65 @@ No, the spmd block does not necessarily parallelize code in the GPU.
 The spmd block or Run Single Programs on Multiple Data Sets is used to parallelize code across multiple workers in a parallel pool but not specifically the GPU. To use a GPU to process code you would use the matlab functions gpuArray() function garrayfun() will force the code to use the GPU.
 
 \subsection{Part 1 Question B}
-Demonstrate the use and effect with regards to speed of parallelization through spmd blocks and their labIndex to count the number of 1s in a 100 × 100 array.
-It is expected that that the parallelization process will faster.
+Before analysing the speed of the different parallelism methods, the parallelism function would have to be created.
+For this question, they would simply count the number of 1s in a 100x100 matrix of random integers from 1 to 10 created using
+
+\begin{Matlab}
+    X = randi([1 10], 100);
+\end{Matlab}
+
+A function was created for a single thread, an spmd and a parfor method which are shown below.
+
+\begin{Matlab}
+    % Single Thread
+    tic;
+    count = 0;
+    for i = 1:100
+        for j = 1:100
+            if X(i,j) == 1
+                count = count + 1;
+            end
+        end
+    end
+    count
+    toc
+\end{Matlab}
+
+\begin{Matlab}
+    % SPMD Block
+    tic;
+    spmd
+        myStart = (spmdIndex - 1) * 25 + 1;
+        myEnd = myStart + 24;
+        myCount = 0;
+        for i = myStart:myEnd
+            for j = 1:100
+                if X(i,j) == 1
+                    myCount = myCount + 1;
+                end
+            end
+        end
+        % sum all counts into a single array
+        counts = spmdPlus(myCount, 1);
+    end
+    % display total count
+    sum(counts{1})
+    toc
+\end{Matlab}
+
+\begin{Matlab}
+    % Parfor
+    tic;
+    parfor i = 1:100
+        for j = 1:100
+            if X(i,j) == 1
+                count = count + 1;
+            end
+        end
+    end
+    count
+    toc
+\end{Matlab}
+
+The final results were that single thread was the fastest, the parfor second and the SPMD block was the slowest.
+However, with such a small data set, the overhead to create the parallel workers is likely what makes the parallel functions slower.
