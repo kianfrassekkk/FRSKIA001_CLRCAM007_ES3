@@ -5,12 +5,10 @@ __kernel void matrixMultiplication(){
 	
 	//TODO: program your kernel here
 	
-
-	
 	
 	
 }
 
-
-
-
+__kernel void hello_kernel(void) {
+    printf("Hello, World from OpenCL!\n");
+}

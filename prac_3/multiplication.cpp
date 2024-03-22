@@ -2,12 +2,12 @@
 //Author: Christopher Hill For the EEE4120F course at UCT
 //Updated by: S. Winberg
 
-#include<stdio.h>
-#include<CL/cl.h>
-#include<iostream>
-#include<fstream>
-#include<string>
-#include<cmath>
+#include <stdio.h>
+#include <OpenCL/cl.h>
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <cmath>
 #include <tuple>
 
 using namespace std;
@@ -85,7 +85,7 @@ int main(void)
 
 	
 	/* OpenCL structures you need to program*/
-	//cl_device_id device; step 1 and 2 
+//	cl_device_id device; step 1 and 2
 	//cl_context context;  step 3
 	//cl_program program;  steps 4,5 and 6
 	//cl_kernel kernel; step 7
@@ -98,9 +98,9 @@ int main(void)
 	//TODO: initialize matrixA_buffer, matrixB_buffer and output_buffer
 
 	//***step 1*** Get the platform you want to use
-	//cl_int clGetPlatformIDs(cl_uint num_entries,
-	//				cl_platform_id *platforms, 
-	//				cl_uint *num_platforms)
+	cl_int clGetPlatformIDs(cl_uint num_entries,
+					cl_platform_id *platforms,
+					cl_uint *num_platforms);
   	
     	//------------------------------------------------------------------------
     
@@ -131,11 +131,11 @@ int main(void)
 	//------------------------------------------------------------------------
 
 	//***step 2*** get device ID must first get platform
-	//cl_int clGetDeviceIDs(cl_platform_id platform,
-	//			cl_device_type device_type, 
-	//			cl_uint num_entries, 
-	//			cl_device_id *devices, 
-	//			cl_uint *num_devices)
+	cl_int clGetDeviceIDs(cl_platform_id platform,
+				cl_device_type device_type,
+				cl_uint num_entries,
+				cl_device_id *devices,
+				cl_uint *num_devices);
 	
 	cl_device_id device; //this is your deviceID
 	cl_int err;
@@ -151,11 +151,11 @@ int main(void)
 	//------------------------------------------------------------------------
 	
 	//***Step 3*** creates a context that allows devices to send and receive kernels and transfer data
-	//cl_context clCreateContext(cl_context_properties *properties,
-	//				cl_uint num_devices,
-	//				const cl_device_id *devices,
-	//				void *pfn_notify(const char *errinfo, const void *private_info, size_t cb, void *user_data),
-	//				void *user_data,cl_int *errcode_ret)
+//	cl_context clCreateContext(cl_context_properties *properties,
+//					cl_uint num_devices,
+//					const cl_device_id *devices,
+//					void *pfn_notify(const char *errinfo, const void *private_info, size_t cb, void *user_data),
+//					void *user_data,cl_int *errcode_ret);
 	cl_context context; //This is your contextID, the line below must just run
 	context = clCreateContext(NULL, 1, &device, NULL, NULL, NULL);
 
@@ -220,7 +220,7 @@ int main(void)
 	//						cl_command_queue_properties properties,
 	//						cl_int *errcode_ret)
 	
-	cl_command_queue queue = clCreateCommandQueueWithProperties(context, device, 0, NULL);
+//	cl_command_queue queue = clCreateCommandQueueWithProperties(context, device, 0, NULL);
 
 	//------------------------------------------------------------------------
 
@@ -272,43 +272,43 @@ int main(void)
 	
 	
 	
-	cl_int err4 = clEnqueueNDRangeKernel(queue, kernel, 1, NULL, &global_size, &local_size, 0, NULL, NULL); 
+//	cl_int err4 = clEnqueueNDRangeKernel(queue, kernel, 1, NULL, &global_size, &local_size, 0, NULL, NULL);
 	
 	
 
-	printf("\nKernel check: %i \n",err4);
+//	printf("\nKernel check: %i \n",err4);
 
 	//------------------------------------------------------------------------
 
 	//***Step 12*** Allows the host to read from the buffer object 
-	err = clEnqueueReadBuffer(queue, output_buffer, CL_TRUE, 0, sizeof(output), output, 0, NULL, NULL);
+//	err = clEnqueueReadBuffer(queue, output_buffer, CL_TRUE, 0, sizeof(output), output, 0, NULL, NULL);
 	
 	
 	//This command stops the program here until everything in the queue has been run
-	clFinish(queue);
+//	clFinish(queue);
 	
 	
 	//***Step 13*** Check that the host was able to retrieve the output data from the output buffer
 	
-	if(displayMatrices){
-		printf("\nOutput in the output_buffer \n");
-		for(int j=0; j<countA; j++) {
-			printf("%i \t " ,output[j]);
-			if(j%Size == (Size-1)){
-				printf("\n");
-			}
-		}
-	}
+//	if(displayMatrices){
+//		printf("\nOutput in the output_buffer \n");
+//		for(int j=0; j<countA; j++) {
+//			printf("%i \t " ,output[j]);
+//			if(j%Size == (Size-1)){
+//				printf("\n");
+//			}
+//		}
+//	}
 	
 	
 	//------------------------------------------------------------------------
 
 	//***Step 14*** Deallocate resources	
-	clReleaseKernel(kernel);
-	clReleaseMemObject(output_buffer);
-	clReleaseMemObject(matrixA_buffer);
-	clReleaseMemObject(matrixB_buffer);
-	clReleaseCommandQueue(queue);
+//	clReleaseKernel(kernel);
+//	clReleaseMemObject(output_buffer);
+//	clReleaseMemObject(matrixA_buffer);
+//	clReleaseMemObject(matrixB_buffer);
+//	clReleaseCommandQueue(queue);
 	clReleaseProgram(program);
 	clReleaseContext(context);
 

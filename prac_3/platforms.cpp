@@ -8,9 +8,10 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-//#include <OpenCL/opencl.h>
+#include <OpenCL/cl.h>
+#include <OpenCL/cl_platform.h>
 //#else
-#include <CL/cl.h>
+//#include <CL/cl.h>
 //#endif
 
 int main() {
