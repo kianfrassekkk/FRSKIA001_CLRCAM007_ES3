@@ -62,24 +62,32 @@ int main(void)
 
 	//New code for prac 3.2
     #define displayMatrices true
-    #define Size 5
-	int countA = Size*Size;
-	int matrixA[countA];
-	createKnownSquareMatrix(Size,matrixA,displayMatrices);
-	cout<<"Number of elements in matrix 1: "<<countA<<"\n";
+    #define Size 3
+	int count1 = Size * Size;
+	int matrix1[count1];
+	createKnownSquareMatrix(Size, matrix1, displayMatrices);
+	cout<<"Number of elements in matrix 1: " << count1 << "\n";
 	cout<<"Dimensions of matrix 1: "<<Size<<"x"<<Size<<"\n";
-	cout<<"Matrix 1 pointer: "<<matrixA<<"\n";
+	cout<<"Matrix 1 pointer: " << matrix1 << "\n";
 
-	
-	
-	int countB = Size*Size;
-	int matrixB[countB];
-	createKnownSquareMatrix(Size, matrixB,displayMatrices);
-	cout<<"Number of elements in matrix 2: "<<countB<<"\n";
+
+	int count2 = Size * Size;
+	int matrix2[count2];
+	createKnownSquareMatrix(Size, matrix2, displayMatrices);
+    for (int i = 0; i < count2; i++) matrix2[i] = matrix2[i] * 2;
+	cout<<"Number of elements in matrix 2: " << count2 << "\n";
 	cout<<"Dimensions of matrix 2: "<<Size<<"x"<<Size<<"\n";
-	cout<<"Matrix 2 pointer: "<<matrixB<<"\n";
+	cout << "Matrix 2 pointer: " << matrix2 << "\n";
 
-	
+
+    int count3 = Size * Size;
+    int matrix3[count3];
+    createKnownSquareMatrix(Size, matrix3, displayMatrices);
+    cout << "Number of elements in matrix 3: " << count3 << "\n";
+    cout<<"Dimensions of matrix 3: "<<Size<<"x"<<Size<<"\n";
+    cout << "Matrix 3 pointer: " << matrix3 << "\n";
+
+
 	/* OpenCL structures you need to program*/
 	cl_device_id device;
 	cl_context context;
@@ -184,27 +192,28 @@ int main(void)
     cl_int num_groups = global_size/local_size; //number of work groups needed
 
 
-    //already got matrixA and matrixB
+    //already got matrix1 and matrix2
 	//TODO: initialize the output array
-    int matrix_output[global_size];
-    for (int i = 0; i < global_size; i++) matrix_output[i] = 0;
+    int count_output = Size*Size;
+    int matrix_output[count_output];
+    for (int i = 0; i < count_output; i++) matrix_output[i] = 0;
 	
 	//TODO: create matrixA_buffer, matrixB_buffer and output_buffer, with clCreateBuffer()
     cl_mem matrixA_buffer = clCreateBuffer(context,
                                            CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR,
-                                           countA * sizeof(int),
-                                           &matrixA,
+                                           count1 * sizeof(int),
+                                           &matrix1,
                                            &err);
 
     cl_mem matrixB_buffer = clCreateBuffer(context,
                                            CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR,
-                                           countB * sizeof(int),
-                                           &matrixB,
+                                           count2 * sizeof(int),
+                                           &matrix2,
                                            &err);
 
     cl_mem output_buffer = clCreateBuffer(context,
                                            CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR,
-                                           global_size * sizeof(int),
+                                          count_output * sizeof(int),
                                            &matrix_output,
                                            &err);
 
@@ -228,15 +237,60 @@ int main(void)
 
 	err = clEnqueueReadBuffer(queue, output_buffer, CL_TRUE, 0, sizeof(matrix_output), matrix_output, 0, NULL, NULL);
 
-//	This command stops the program here until everything in the queue has been run
+    //This command stops the program here until everything in the queue has been run
 	clFinish(queue);
 
     //------------------------------------------------------------------------
     //STEP 13
+    //TODO: remake matrixA_buffer and matrixB_buffer for next matrix calc.
+    matrixA_buffer = clCreateBuffer(context,
+                                    CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR,
+                                    count_output * sizeof(int),
+                                    &matrix_output,
+                                    &err);
+
+    matrixB_buffer = clCreateBuffer(context,
+                                    CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR,
+                                    count3 * sizeof(int),
+                                    &matrix3,
+                                    &err);
+
+    for (int i = 0; i < count_output; i++) matrix_output[i] = 0;
+    output_buffer = clCreateBuffer(context,
+                                   CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR,
+                                   count_output * sizeof(int),
+                                   &matrix_output,
+                                   &err);
+
+    //------------------------------------------------------------------------
+    //STEP 14
+
+    //TODO: create the arguments for the kernel. Note you can create a local buffer only on the GPU as follows: clSetKernelArg(kernel, argNum, size, NULL);
+    clSetKernelArg(kernel, 0, sizeof(cl_mem), &matrixA_buffer);
+    clSetKernelArg(kernel, 1, sizeof(cl_mem), &matrixB_buffer);
+    clSetKernelArg(kernel, 2, sizeof(cl_mem), &output_buffer);
+
+    //------------------------------------------------------------------------
+    //STEP 15
+
+    err4 = clEnqueueNDRangeKernel(queue, kernel, 1, NULL, &global_size, &local_size, 0, NULL, NULL);
+
+    printf("\nKernel check: %i \n",err4);
+
+    //------------------------------------------------------------------------
+    //STEP 16
+
+    err = clEnqueueReadBuffer(queue, output_buffer, CL_TRUE, 0, sizeof(matrix_output), matrix_output, 0, NULL, NULL);
+
+    //This command stops the program here until everything in the queue has been run
+    clFinish(queue);
+
+    //------------------------------------------------------------------------
+    //STEP 17
 
 	if(displayMatrices){
 		printf("\nOutput in the output_buffer \n");
-		for(int j=0; j<countA; j++) {
+		for(int j=0; j < count1; j++) {
 			printf("%i\t", matrix_output[j]);
 			if(j%Size == (Size-1)){
 				printf("\n");
@@ -246,7 +300,7 @@ int main(void)
 	
 	
 	//------------------------------------------------------------------------
-    //STEP 14
+    //STEP 18
 
 	clReleaseKernel(kernel);
 	clReleaseMemObject(output_buffer);
