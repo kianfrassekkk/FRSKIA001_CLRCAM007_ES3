@@ -3,6 +3,7 @@
 //
 
 #include <stdio.h>
+#include <iostream>
 #include <OpenCL/cl.h>
 #include <OpenCL/cl_ext.h>
 #include <OpenCL/cl_gl_ext.h>
@@ -19,7 +20,10 @@ int main() {
     cl_kernel kernel;
     cl_command_queue queue;
 
+    cl_mem argument1_buffer, argument2_buffer, output_buffer;
+
     //------------------------------------------------------------------------
+    //STEP 1
 
     cl_uint platformCount; //keeps track of the number of platforms you have installed on your device
     cl_platform_id *platforms;
@@ -48,6 +52,7 @@ int main() {
     printf("Profile   : %s\n", Info);
 
     //------------------------------------------------------------------------
+    //STEP 2
 
     cl_int err;
 
@@ -65,7 +70,8 @@ int main() {
     context = clCreateContext(NULL, 1, &device, NULL, NULL, NULL);
 
     //------------------------------------------------------------------------
-//
+    //STEP 4
+
     //read file in
     FILE *program_handle;
     program_handle = fopen("OpenCL/Kernel.cl", "r");
@@ -84,44 +90,65 @@ int main() {
     fclose(program_handle);
 
     //------------------------------------------------------------------------
+    //STEP 5
 
     program = clCreateProgramWithSource(context, 1, (const char**)&program_buffer, &program_size, NULL); //this compiles the kernels code
 
     //------------------------------------------------------------------------
+    //STEP 6
 
     cl_int err3 = clBuildProgram(program, 0, NULL, NULL, NULL, NULL);
     printf("program ID = %i\n", err3);
 
-    //------------------------------------------------------------------------
+    // Step 1: Get the size of the build log
+    size_t log_size;
+    clGetProgramBuildInfo(program, device, CL_PROGRAM_BUILD_LOG, 0, NULL, &log_size);
 
-    kernel = clCreateKernel(program, "hello_kernel", &err);
+    // Step 2: Allocate memory to store the log
+    char* log_buffer = new char[log_size + 1]; // Add space for null terminator
+
+    // Step 3: Get the actual build log
+    clGetProgramBuildInfo(program, device, CL_PROGRAM_BUILD_LOG, log_size, log_buffer, NULL);
+
+    // Step 4: Process the log (e.g., print it)
+    std::cout << "Build Log:\n" << log_buffer << std::endl;
+
+    // Step 5: Deallocate memory
+    delete[] log_buffer;
 
     //------------------------------------------------------------------------
+    //STEP 7
+
+    kernel = clCreateKernel(program, "HelloWorld", &err);
+
+    //------------------------------------------------------------------------
+    //STEP 8
 
     queue = clCreateCommandQueueWithPropertiesAPPLE(context, device, 0, NULL);
 
     //------------------------------------------------------------------------
+    //STEP 9
 
     size_t global_size = 16; //total number of work items
     size_t local_size = 4; //Size of each work group
     cl_int num_groups = global_size/local_size; //number of work groups needed
 
-    int argument1, argument2;
-    int *output;
-    output = (int *)malloc(global_size*local_size*sizeof(int));
+    int argument1 = 10, argument2 = 20;
+    int output[global_size];
 
-    cl_mem argument1_buffer = clCreateBuffer(context,
+    argument1_buffer = clCreateBuffer(context,
                                       CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(int),
                                       &argument1, &err);
-    cl_mem argument2_buffer = clCreateBuffer(context,
+    argument2_buffer = clCreateBuffer(context,
                                       CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(int),
                                       &argument2, &err);
-    cl_mem output_buffer = clCreateBuffer(context,
+    output_buffer = clCreateBuffer(context,
                                    CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR,
-                                   (global_size*local_size*sizeof(int)), output, &err);
+                                   (global_size*sizeof(int)), output, &err);
 
 
     //------------------------------------------------------------------------
+    //STEP 10
 
     clSetKernelArg(kernel, 0, sizeof(cl_mem), &argument1_buffer);
     clSetKernelArg(kernel, 1, sizeof(cl_mem), &argument2_buffer);
@@ -129,34 +156,36 @@ int main() {
 
     //------------------------------------------------------------------------
 
+    //STEP 11
 	cl_int err4 = clEnqueueNDRangeKernel(queue, kernel, 1, NULL, &global_size, &local_size, 0, NULL, NULL);
 
 	printf("\nKernel check: %i \n",err4);
 
     //------------------------------------------------------------------------
 
+    //STEP 12
 	err = clEnqueueReadBuffer(queue, output_buffer, CL_TRUE, 0, sizeof(output), output, 0, NULL, NULL);
 
 //    This command stops the program here until everything in the queue has been run
-	clFinish(queue);
+//	clFinish(queue);
 
     //------------------------------------------------------------------------
 
+    //STEP 13
     printf("\nOutput in the output_buffer \n");
     for(int j=0; j<global_size; j++) {
         printf("element number:%i \t Output:%i \n",j ,output[j]);
     }
 
-//    //------------------------------------------------------------------------
-//
-//    //***Step 14*** Deallocate resources
-//	clReleaseKernel(kernel);
-//	clReleaseMemObject(output_buffer);
-//	clReleaseMemObject(argument1_buffer);
-//	clReleaseMemObject(argument2_buffer);
-//	clReleaseCommandQueue(queue);
-//    clReleaseProgram(program);
-//    clReleaseContext(context);
+    //------------------------------------------------------------------------
+
+	clReleaseKernel(kernel);
+	clReleaseMemObject(output_buffer);
+	clReleaseMemObject(argument1_buffer);
+	clReleaseMemObject(argument2_buffer);
+	clReleaseCommandQueue(queue);
+    clReleaseProgram(program);
+    clReleaseContext(context);
 
     return 0;
 }
