@@ -12,11 +12,10 @@
 
 using namespace std;
 
-
 //creates a square matrix of dimensions Size X Size, with the values being the column number
 void createKnownSquareMatrix(int Size, int* squareMatrix, bool displayMatrices){
 
-	
+
 	for(int i = 0; i<Size; i++){
 		
 		for(int j = 0; j<Size; j++){
@@ -55,9 +54,6 @@ void createRandomSquareMatrix(int Size, int* squareMatrix, bool displayMatrices)
 }
 
 
-
-
-
 int main(void)
 {
 
@@ -65,8 +61,8 @@ int main(void)
 
 
 	//New code for prac 3.2
-	bool displayMatrices = true;
-	int Size = 3;
+    #define displayMatrices true
+    #define Size 5
 	int countA = Size*Size;
 	int matrixA[countA];
 	createKnownSquareMatrix(Size,matrixA,displayMatrices);
@@ -85,25 +81,15 @@ int main(void)
 
 	
 	/* OpenCL structures you need to program*/
-//	cl_device_id device; step 1 and 2
-	//cl_context context;  step 3
-	//cl_program program;  steps 4,5 and 6
-	//cl_kernel kernel; step 7
-	//cl_command_queue queue; step 8
-	
-	//------------------------------------------------------------------------
-	 
-	 
-	//Initialize Buffers, memory space the allows for communication between the host and the target device
-	//TODO: initialize matrixA_buffer, matrixB_buffer and output_buffer
+	cl_device_id device;
+	cl_context context;
+	cl_program program;
+	cl_kernel kernel;
+	cl_command_queue queue;
 
-	//***step 1*** Get the platform you want to use
-	cl_int clGetPlatformIDs(cl_uint num_entries,
-					cl_platform_id *platforms,
-					cl_uint *num_platforms);
-  	
-    	//------------------------------------------------------------------------
-    
+    //------------------------------------------------------------------------
+    //STEP 1
+
 	cl_uint platformCount; //keeps track of the number of platforms you have installed on your device
 	cl_platform_id *platforms;
 	// get platform count
@@ -129,15 +115,8 @@ int main(void)
 	printf("Profile   : %s\n", Info);
 	
 	//------------------------------------------------------------------------
+    //STEP 2
 
-	//***step 2*** get device ID must first get platform
-	cl_int clGetDeviceIDs(cl_platform_id platform,
-				cl_device_type device_type,
-				cl_uint num_entries,
-				cl_device_id *devices,
-				cl_uint *num_devices);
-	
-	cl_device_id device; //this is your deviceID
 	cl_int err;
 	
 	/* Access a device */
@@ -145,23 +124,18 @@ int main(void)
 	err = clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, 1, &device, NULL);
 	if(err == CL_DEVICE_NOT_FOUND) {
 		err = clGetDeviceIDs(platform, CL_DEVICE_TYPE_CPU, 1, &device, NULL);
-	}
+        printf("CPU ");
+	} else printf("GPU ");
 	printf("Device ID = %i\n",err);
 
 	//------------------------------------------------------------------------
-	
-	//***Step 3*** creates a context that allows devices to send and receive kernels and transfer data
-//	cl_context clCreateContext(cl_context_properties *properties,
-//					cl_uint num_devices,
-//					const cl_device_id *devices,
-//					void *pfn_notify(const char *errinfo, const void *private_info, size_t cb, void *user_data),
-//					void *user_data,cl_int *errcode_ret);
-	cl_context context; //This is your contextID, the line below must just run
+    //STEP 3
+
 	context = clCreateContext(NULL, 1, &device, NULL, NULL, NULL);
 
 	//------------------------------------------------------------------------
+    //STEP 4
 
-	//***Step 4*** get details about the kernel.cl file in order to create it (read the kernel.cl file and place it in a buffer)
 	//read file in	
 	FILE *program_handle;
 	program_handle = fopen("OpenCL/Kernel.cl", "r");
@@ -180,135 +154,105 @@ int main(void)
 	fclose(program_handle);
    	
 	//------------------------------------------------------------------------
-
-	//***Step 5*** create program from source because the kernel is in a separate file 'kernel.cl', therefore the compiler must run twice once on main and once on kernel
-	//cl_program clCreateProgramWithSource (cl_context context,
-	//						cl_uint count, 
-	//						const char **strings, 
-	//						const size_t *lengths, 
-	//						cl_int *errcode_ret)	
+	//STEP 5
 	
-	cl_program program = clCreateProgramWithSource(context, 1, (const char**)&program_buffer, &program_size, NULL); //this compiles the kernels code
+	program = clCreateProgramWithSource(context, 1, (const char**)&program_buffer, &program_size, NULL); //this compiles the kernels code
 
 	//------------------------------------------------------------------------
-
-	//***Step 6*** build the program, this compiles the source code from above for the devices that the code has to run on (ie GPU or CPU)
-	//cl_int clBuildProgram(cl_program program,
-	//		cl_uint num_devices,
-	//		const cl_device_id* device_list,
-	//		const char* options,
-	//		void (CL_CALLBACK* pfn_notify)(cl_program program, void* user_data),
-	//		void* user_data);
+	//STEP 6
 	
 	cl_int err3= clBuildProgram(program, 0, NULL, NULL, NULL, NULL);
 	printf("program ID = %i\n", err3);
 	
 	//------------------------------------------------------------------------
-
-	//***Step 7*** creates the kernel, this creates a kernel from one of the functions in the cl_program you just built
-	//cl_kernel clCreateKernel(cl_program program,
-	//			const char* kernel_name,
-	//			cl_int* errcode_ret);
+	//STEP 7
 
 	//TODO: select the kernel you are running
+    kernel = clCreateKernel(program, "matrixMultiplication", &err);
 
 	//------------------------------------------------------------------------
-	
-	//***Step 8*** create command queue to the target device. This is the queue that the kernels get dispatched too, to get the the desired device.
-	//cl_command_queue clCreateCommandQueue(cl_context context,
-	//						cl_device_id device, 
-	//						cl_command_queue_properties properties,
-	//						cl_int *errcode_ret)
-	
-//	cl_command_queue queue = clCreateCommandQueueWithProperties(context, device, 0, NULL);
+	//STEP 8
+
+	queue = clCreateCommandQueue(context, device, 0, NULL);
 
 	//------------------------------------------------------------------------
 
-	//***Step 9*** create data buffers for memory management between the host and the target device
+	//STEP 9
 	//TODO: set global_size, local_size and num_groups, in order to control the number of work item in each work group
-	
-	//already got matrixA and matrixB
+    size_t global_size = Size*Size; //total number of work items
+    size_t local_size = Size; //Size of each work group
+    cl_int num_groups = global_size/local_size; //number of work groups needed
+
+
+    //already got matrixA and matrixB
 	//TODO: initialize the output array
-
-   
-
-	
-	//Buffer (memory block) that both the host and target device can access 
-	//cl_mem clCreateBuffer(cl_context context,
-	//			cl_mem_flags flags,
-	//			size_t size,
-	//			void* host_ptr,
-	//			cl_int* errcode_ret);
+    int matrix_output[global_size];
+    for (int i = 0; i < global_size; i++) matrix_output[i] = 0;
 	
 	//TODO: create matrixA_buffer, matrixB_buffer and output_buffer, with clCreateBuffer()
+    cl_mem matrixA_buffer = clCreateBuffer(context,
+                                           CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR,
+                                           countA * sizeof(int),
+                                           &matrixA,
+                                           &err);
 
+    cl_mem matrixB_buffer = clCreateBuffer(context,
+                                           CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR,
+                                           countB * sizeof(int),
+                                           &matrixB,
+                                           &err);
+
+    cl_mem output_buffer = clCreateBuffer(context,
+                                           CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR,
+                                           global_size * sizeof(int),
+                                           &matrix_output,
+                                           &err);
 
 	//------------------------------------------------------------------------
-
-	//***Step 10*** create the arguments for the kernel (link these to the buffers set above, using the pointers for the respective buffers)
-	// cl_int clSetKernelArg (cl_kernel kernel, 
-	//				cl_uint arg_index, 
-	//				size_t arg_size, 
-	//				const void *arg_value)
+    //STEP 10
 	
 	//TODO: create the arguments for the kernel. Note you can create a local buffer only on the GPU as follows: clSetKernelArg(kernel, argNum, size, NULL);
+    clSetKernelArg(kernel, 0, sizeof(cl_mem), &matrixA_buffer);
+    clSetKernelArg(kernel, 1, sizeof(cl_mem), &matrixB_buffer);
+    clSetKernelArg(kernel, 2, sizeof(cl_mem), &output_buffer);
 
 	//------------------------------------------------------------------------
+    //STEP 11
 
-	
-	
+	cl_int err4 = clEnqueueNDRangeKernel(queue, kernel, 1, NULL, &global_size, &local_size, 0, NULL, NULL);
 
-	//***Step 11*** enqueue kernel, deploys the kernels and determines the number of work-items that should be generated to execute the kernel (global_size) and the number of work-items in each work-group (local_size).
-	
-	// cl_int clEnqueueNDRangeKernel (cl_command_queue command_queue, 
-	//					cl_kernel kernel, 
-	//					cl_uint work_dim, 
-	//					const size_t *global_work_offset, 
-	//					const size_t *global_work_size, 
-	//					const size_t *local_work_size, 
-	//					cl_uint num_events_in_wait_list, 
-	//					const cl_event *event_wait_list, 
-	//					cl_event *event)
-	
-	
-	
-//	cl_int err4 = clEnqueueNDRangeKernel(queue, kernel, 1, NULL, &global_size, &local_size, 0, NULL, NULL);
-	
-	
-
-//	printf("\nKernel check: %i \n",err4);
+	printf("\nKernel check: %i \n",err4);
 
 	//------------------------------------------------------------------------
+    //STEP 12
 
-	//***Step 12*** Allows the host to read from the buffer object 
-//	err = clEnqueueReadBuffer(queue, output_buffer, CL_TRUE, 0, sizeof(output), output, 0, NULL, NULL);
-	
-	
-	//This command stops the program here until everything in the queue has been run
-//	clFinish(queue);
-	
-	
-	//***Step 13*** Check that the host was able to retrieve the output data from the output buffer
-	
-//	if(displayMatrices){
-//		printf("\nOutput in the output_buffer \n");
-//		for(int j=0; j<countA; j++) {
-//			printf("%i \t " ,output[j]);
-//			if(j%Size == (Size-1)){
-//				printf("\n");
-//			}
-//		}
-//	}
+	err = clEnqueueReadBuffer(queue, output_buffer, CL_TRUE, 0, sizeof(matrix_output), matrix_output, 0, NULL, NULL);
+
+//	This command stops the program here until everything in the queue has been run
+	clFinish(queue);
+
+    //------------------------------------------------------------------------
+    //STEP 13
+
+	if(displayMatrices){
+		printf("\nOutput in the output_buffer \n");
+		for(int j=0; j<countA; j++) {
+			printf("%i\t", matrix_output[j]);
+			if(j%Size == (Size-1)){
+				printf("\n");
+			}
+		}
+	}
 	
 	
 	//------------------------------------------------------------------------
+    //STEP 14
 
-	//***Step 14*** Deallocate resources	
-//	clReleaseKernel(kernel);
-//	clReleaseMemObject(output_buffer);
-//	clReleaseMemObject(matrixA_buffer);
-//	clReleaseMemObject(matrixB_buffer);
-//	clReleaseCommandQueue(queue);
+	clReleaseKernel(kernel);
+	clReleaseMemObject(output_buffer);
+	clReleaseMemObject(matrixA_buffer);
+	clReleaseMemObject(matrixB_buffer);
+	clReleaseCommandQueue(queue);
 	clReleaseProgram(program);
 	clReleaseContext(context);
 
