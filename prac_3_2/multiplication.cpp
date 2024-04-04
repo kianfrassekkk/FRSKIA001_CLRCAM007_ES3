@@ -246,6 +246,7 @@ float matrix_multiply(int Size, int MATRIX_COUNT, bool displayMatrices) {
 	//------------------------------------------------------------------------
     //STEP 18
 
+    clReleaseDevice(device);
 	clReleaseKernel(kernel);
 	clReleaseMemObject(output_buffer);
 	clReleaseMemObject(matrixA_buffer);
@@ -259,7 +260,7 @@ float matrix_multiply(int Size, int MATRIX_COUNT, bool displayMatrices) {
 }
 
 int main(void) {
-#define averages 3
+#define averages 20
 #define size_min 2
 #define size_max 201
 #define count_min 2
@@ -268,7 +269,9 @@ int main(void) {
 
     float time;
     /*
+    printf("<------------------------------------------------------->\n");
     printf("Run time for sizes between %d and %d\n\n", size_min, size_max);
+    matrix_multiply(size_min, 2, false);
     for (int size = size_min; size < size_max; size++) {
         time = 0;
         for (int i = 0; i < averages; i++) {
@@ -276,10 +279,12 @@ int main(void) {
         }
         printf("%0.8f\n", time / averages);
     }
-     */
+    */
 
     for (int count_size : count_sizes) {
+        printf("<------------------------------------------------------->\n");
         printf("\nRun time for count between %d and %d at size %d\n\n", count_min, count_max, count_size);
+        matrix_multiply(count_size, count_min, false);
         for (int count = count_min; count < count_max; count++) {
             time = 0;
             for (int i = 0; i < averages; i++) {
