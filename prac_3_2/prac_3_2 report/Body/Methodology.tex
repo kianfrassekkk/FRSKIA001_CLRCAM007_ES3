@@ -1,0 +1,68 @@
+\section{Methodology}
+
+\subsection{Hardware}
+The hardware used to conduct these experiments is a MacBook Pro 13" 2019 model.
+All of these parallel programs were conducted on the GPU which is a Intel Iris Plus Graphics 1536 MB.
+All of the single thread programs were conducted on the CPU which is 2 GHz Quad-Core Intel Core i5.
+
+\subsection{Implementation}
+
+\subsubsection{Single Thread Program}
+The single thread program is a relative simple implementation in C code.
+It requires two for loops which iterate over the row and column of the result matrix and a third which calculates the dot product of the input matrices to find the value of the cell of the output matrix.
+There is one additional for loop which allows for multiplying a given number of matrices together
+
+\begin{OpenCL}{C++ code to perform single threaded matrix multiplication}{C_Matrix_Mult}
+ int matrix_output[matrix_size], matrixA[matrix_size], cell;
+ for (int c = 0; c < matrix_size; c++) matrixA[c] = matrices[0][c];
+
+ //Matrix multiplication
+ for (int m = 1; m < MATRIX_COUNT; m++) {
+  for (int row = 0; row < Size; row++) {
+   for (int col = 0; col < Size; col++) {
+    cell = 0;
+    for (int dot = 0; dot < Size; dot++) {
+     cell += matrixA[row * Size + dot] * matrices[m][col + dot * Size];
+    }
+    matrix_output[row * Size + col] = cell;
+   }
+  }
+  //rewrite matrix A with output so loop can re-iterate
+  for (int c = 0; c < matrix_size; c++) matrixA[c] = matrix_output[c];
+ }
+\end{OpenCL}
+
+\subsubsection{Parallel Program}
+The parallel program involves setting up OpenCL to run instances of a kernel program.
+The kernel program itself runs a very similar instance of the cell calculation for the single thread program above where the row is equivalent to the workGroupNumber and the column is equivalent to the localGroupID.
+A for loop is used to calculate the dot product as in the single thread program.
+Lastly, there is an additional for loop in the OpenCL setup code which allows for successive matrix multiplication.
+
+
+\begin{OpenCL}{OpenCL kernel code to perform parallel threaded matrix multiplication}{OpenCL_Matrix_Mult}
+ __kernel void matrixMultiplication(
+  __global int* matrixA_buffer,
+  __global int* matrixB_buffer,
+  __global int* output_buffer
+ ){
+  int workItemNum = get_global_id(0); //Work item ID
+  int workGroupNum = get_group_id(0); //Work group ID
+  int localGroupID = get_local_id(0); //Work items ID within each work group
+  int localSize = get_local_size(0); //Get the work number of items per group
+
+  //Row <=> workGroupNum; Column <=> localGroupID
+  //workItemNum <=> workGroup * localSize + localGroupID
+  int cell = 0;
+  for (int i = 0; i < localSize; i++) {
+   cell = cell + *(matrixA_buffer + workGroupNum * localSize + i) *
+    *(matrixB_buffer + localGroupID + i * localSize);
+  }
+  *(output_buffer + workItemNum) = cell;
+ }
+\end{OpenCL}
+
+\subsection{Experiment Procedure}
+
+To evaluate the performance of the single thread versus parallel program two experiments will be conducted and evaluate the difference in time taken and the speed up of the parallel program.
+The first will be multiplying two matrices with different sizes, and the second will be to multiply different numbers of successive matrices of the same size.
+Both methods of testing have different amounts of parallelization and different amounts of overhead and should give good understanding of the effectiveness of parallelizing matrix multiplication code.

@@ -51,25 +51,24 @@ void createRandomSquareMatrix(int Size, int* squareMatrix, bool displayMatrices)
 
 }
 
-
-int main(void)
-{
+float matrix_multiply(int Size, int MATRIX_COUNT, bool displayMatrices) {
 
 	clock_t start, end;  //Timers
 
 	//MATRIX CREATION ALLOWING FOR DIFFERENT SIZES AND COUNTS
-    #define displayMatrices true
-    #define Size 3
 	int matrix_size = Size * Size;
-    #define MATRIX_COUNT 3
     int matrices[MATRIX_COUNT][matrix_size];
 
     for (int m = 0; m < MATRIX_COUNT; m++) {
         createKnownSquareMatrix(Size, matrices[m], displayMatrices);
-        cout << "Number of elements in matrix 1: " << matrix_size << "\n";
-        cout << "Dimensions of matrix 1: " << Size << "x" << Size << "\n";
-        cout << "Matrix 1 pointer: " << matrices[m] << "\n";
+        if (displayMatrices) {
+            cout << "Number of elements in matrix 1: " << matrix_size << "\n";
+            cout << "Dimensions of matrix 1: " << Size << "x" << Size << "\n";
+            cout << "Matrix 1 pointer: " << matrices[m] << "\n";
+        }
     }
+
+    start = clock(); //start running clock
 
 	/* OpenCL structures you need to program*/
 	cl_device_id device;
@@ -95,15 +94,17 @@ int main(void)
 	
 	
 	//Outputs the information of the chosen platform
-	char* Info = (char*)malloc(0x1000*sizeof(char));
-	clGetPlatformInfo(platform, CL_PLATFORM_NAME      , 0x1000, Info, 0);
-	printf("Name      : %s\n", Info);
-	clGetPlatformInfo(platform, CL_PLATFORM_VENDOR    , 0x1000, Info, 0);
-	printf("Vendor    : %s\n", Info);
-	clGetPlatformInfo(platform, CL_PLATFORM_VERSION   , 0x1000, Info, 0);
-	printf("Version   : %s\n", Info);
-	clGetPlatformInfo(platform, CL_PLATFORM_PROFILE   , 0x1000, Info, 0);
-	printf("Profile   : %s\n", Info);
+    if(displayMatrices) {
+        char *Info = (char *) malloc(0x1000 * sizeof(char));
+        clGetPlatformInfo(platform, CL_PLATFORM_NAME, 0x1000, Info, 0);
+        printf("Name      : %s\n", Info);
+        clGetPlatformInfo(platform, CL_PLATFORM_VENDOR, 0x1000, Info, 0);
+        printf("Vendor    : %s\n", Info);
+        clGetPlatformInfo(platform, CL_PLATFORM_VERSION, 0x1000, Info, 0);
+        printf("Version   : %s\n", Info);
+        clGetPlatformInfo(platform, CL_PLATFORM_PROFILE, 0x1000, Info, 0);
+        printf("Profile   : %s\n", Info);
+    }
 	
 	//------------------------------------------------------------------------
     //STEP 2
@@ -115,9 +116,9 @@ int main(void)
 	err = clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, 1, &device, NULL);
 	if(err == CL_DEVICE_NOT_FOUND) {
 		err = clGetDeviceIDs(platform, CL_DEVICE_TYPE_CPU, 1, &device, NULL);
-        printf("CPU ");
-	} else printf("GPU ");
-	printf("Device ID = %i\n",err);
+        if (displayMatrices) printf("CPU ");
+	} else if (displayMatrices) printf("GPU ");
+    if (displayMatrices) printf("Device ID = %i\n",err);
 
 	//------------------------------------------------------------------------
     //STEP 3
@@ -153,7 +154,7 @@ int main(void)
 	//STEP 6
 	
 	cl_int err3= clBuildProgram(program, 0, NULL, NULL, NULL, NULL);
-	printf("program ID = %i\n", err3);
+    if (displayMatrices) printf("program ID = %i\n", err3);
 	
 	//------------------------------------------------------------------------
 	//STEP 7
@@ -211,7 +212,7 @@ int main(void)
 
         cl_int err4 = clEnqueueNDRangeKernel(queue, kernel, 1, NULL, &global_size, &local_size, 0, NULL, NULL);
 
-        printf("\nKernel check: %i \n", err4);
+        if (displayMatrices) printf("\nKernel check: %i \n", err4);
 
         //------------------------------------------------------------------------
         //STEP 12
@@ -253,5 +254,39 @@ int main(void)
 	clReleaseProgram(program);
 	clReleaseContext(context);
 
-	return 0;
+    end = clock();
+	return ((float) end - (float) start)/CLOCKS_PER_SEC;
+}
+
+int main(void) {
+#define averages 3
+#define size_min 2
+#define size_max 201
+#define count_min 2
+#define count_max 51
+    int count_sizes[] = {5, 10, 20, 50, 100};
+
+    float time;
+    /*
+    printf("Run time for sizes between %d and %d\n\n", size_min, size_max);
+    for (int size = size_min; size < size_max; size++) {
+        time = 0;
+        for (int i = 0; i < averages; i++) {
+            time += matrix_multiply(size, 2, false);
+        }
+        printf("%0.8f\n", time / averages);
+    }
+     */
+
+    for (int count_size : count_sizes) {
+        printf("\nRun time for count between %d and %d at size %d\n\n", count_min, count_max, count_size);
+        for (int count = count_min; count < count_max; count++) {
+            time = 0;
+            for (int i = 0; i < averages; i++) {
+                time += matrix_multiply(count_size, count, false);
+            }
+            printf("%0.8f\n", time / averages);
+        }
+    }
+
 }

@@ -49,27 +49,23 @@ void createRandomSquareMatrix(int Size, int* squareMatrix, bool displayMatrices)
 
 }
 
-
-
-
-int main(void){
-
+float matrix_multiply(int Size, int MATRIX_COUNT, bool displayMatrices) {
     clock_t start, end;  //Timers
 
     //MATRIX CREATION ALLOWING FOR DIFFERENT SIZES AND COUNTS
-    #define displayMatrices true
-    #define Size 3
     int matrix_size = Size * Size;
-    #define MATRIX_COUNT 3
     int matrices[MATRIX_COUNT][matrix_size];
 
     for (int m = 0; m < MATRIX_COUNT; m++) {
         createKnownSquareMatrix(Size, matrices[m], displayMatrices);
-        cout << "Number of elements in matrix 1: " << matrix_size << "\n";
-        cout << "Dimensions of matrix 1: " << Size << "x" << Size << "\n";
-        cout << "Matrix 1 pointer: " << matrices[m] << "\n";
+        if (displayMatrices) {
+            cout << "Number of elements in matrix 1: " << matrix_size << "\n";
+            cout << "Dimensions of matrix 1: " << Size << "x" << Size << "\n";
+            cout << "Matrix 1 pointer: " << matrices[m] << "\n";
+        }
     }
-	
+
+    start = clock(); //start running clock
 	
 	int matrix_output[matrix_size], matrixA[matrix_size], cell;
     for (int c = 0; c < matrix_size; c++) matrixA[c] = matrices[0][c];
@@ -88,9 +84,6 @@ int main(void){
         //rewrite matrix A with output so loop can re-iterate
         for (int c = 0; c < matrix_size; c++) matrixA[c] = matrix_output[c];
     }
-		
-	
-	
 	
 	//This if statement will display the matrix in output	
 	if(displayMatrices){
@@ -102,6 +95,42 @@ int main(void){
 			}
 		}
 	}
-	
-	return 0;
+
+    end = clock();
+	return ((float) end - (float) start)/CLOCKS_PER_SEC;
+}
+
+int main(void) {
+#define averages 20
+#define size_min 2
+#define size_max 201
+#define count_min 2
+#define count_max 51
+    int count_sizes[] = {5, 10, 20, 50, 100};
+
+    float time;
+    printf("<------------------------------------------------------->\n");
+    printf("Run time for sizes between %d and %d\n\n", size_min, size_max);
+    matrix_multiply(size_min, 2, false);
+    for (int size = size_min; size < size_max; size++) {
+        time = 0;
+        for (int i = 0; i < averages; i++) {
+            time += matrix_multiply(size, 2, false);
+        }
+        printf("%0.8f\n", time / averages);
+    }
+
+    for (int count_size : count_sizes) {
+        printf("<------------------------------------------------------->\n");
+        printf("\nRun time for count between %d and %d at size %d\n\n", count_min, count_max, count_size);
+        matrix_multiply(count_size, count_min, false);
+        for (int count = count_min; count < count_max; count++) {
+            time = 0;
+            for (int i = 0; i < averages; i++) {
+                time += matrix_multiply(count_size, count, false);
+            }
+            printf("%0.8f\n", time / averages);
+        }
+    }
+
 }
