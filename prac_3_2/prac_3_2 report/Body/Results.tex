@@ -21,8 +21,44 @@ However, as the matrix size increases, the time taken for single-thread multipli
 
 \subsection{ Multiplying different number of matrices with same sizes}
 This section discusses the time taken for parallelized verses single thread multiplying different numbers of matrices of the same size.
-Looking at the results in figure \ref{fig:different_matrix_counts_size_10}, \ref{fig:different_matrix_counts_size_10}, \ref{fig:different_matrix_counts_size_20}, \ref{fig:different_matrix_counts_size_50} and \ref{fig:different_matrix_counts_size_100},
-It can be seen that there ar two different types of over heads the openCl setup overheads and the over head of starting the kernel to run.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\columnwidth]{Figures/different_matrix_counts_size 5.png}
+    \caption{Single thread vs Parallel processing time for different matrix counts all with size 10}
+    \label{fig:different_matrix_counts_size 5}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\columnwidth]{Figures/different_matrix_counts_size 10.png}
+    \caption{Single thread vs Parallel processing time for different matrix counts all with size 10}
+    \label{fig:different_matrix_counts_size 10}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\columnwidth]{Figures/different_matrix_counts_size 20}
+    \caption{Single thread vs Parallel processing time for different matrix counts all with size 20}
+    \label{fig:different_matrix_counts_size 20}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\columnwidth]{Figures/different_matrix_counts_size 50}
+    \caption{Single thread vs Parallel processing time for different matrix counts all with size 50}
+    \label{fig:different_matrix_counts_size 50}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\columnwidth]{Figures/different_matrix_counts_size 100}
+    \caption{Single thread vs Parallel processing time for different matrix counts all with size 100}
+    \label{fig:different_matrix_counts_size 100}
+\end{figure}
+
+Looking at the results in figures: \ref{fig:different_matrix_counts_size 5}, \ref{fig:different_matrix_counts_size 10}, \ref{fig:different_matrix_counts_size 20}, \ref{fig:different_matrix_counts_size 50} and \ref{fig:different_matrix_counts_size 100},
+It can be seen that there are two different types of over heads the openCl setup overheads and the overheads for starting the kernel.
 The openCl setup overheads are the same for all the different matrix counts, this is because the openCl setup is done once and the same for all the different matrix counts.
 This is indicated in our graph because the time taken at matrix count of 5 remain around 5ms independent of matrix size.
 
@@ -30,117 +66,13 @@ The overhead of starting the kernel to run seem to result in a linear increase i
 This occurs because each time the a new test is run a the buffer need to be re initialized and the kernel need to be started.
 This can be seen in the graph because both the parallelized and single thread  result in linear increase in time as the matrix count increases.
 however percentage of time spent parallelizing decreases as the matrix count increases.
-This is indicated in the in figure \ref{fig:different_matrix_counts_size 5} where the linear graf of the time take vs matrix cont for parallelized multiplication
+This is indicated in the in figure \ref{fig:different_matrix_counts_size 50} where the linear graf of the time take vs matrix cont for parallelized multiplication
 and single thread multiplication intersect. in other words there is an increase in efficiency of parallelized multiplication as the matrix count increases.
 
 Looking at all the graph it can be seen that as the matrix size increases the speed up for parallelized multiplication vs the single thread multiplication improves.
-in other words at smaller matrix sizes the time taken for parallelized multiplication is longer than the time taken for single thread multiplication
+In other words at smaller matrix sizes the time taken for parallelized multiplication is longer than the time taken for single thread multiplication
 and at larger matrix sizes the time taken for parallelized multiplication is shorter than the time taken for single thread multiplication.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\columnwidth]{Figures/different_matrix_counts_size 5.png}
-    \caption{Single thread vs Parallel processing time for different matrix counts all with size 10}
-    \label{fig:different_matrix_counts_size_10}
-\end{figure}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\columnwidth]{Figures/different_matrix_counts_size 10.png}
-    \caption{Single thread vs Parallel processing time for different matrix counts all with size 10}
-    \label{fig:different_matrix_counts_size_10}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\columnwidth]{Figures/different_matrix_counts_size 20}
-    \caption{Single thread vs Parallel processing time for different matrix counts all with size 20}
-    \label{fig:different_matrix_counts_size_20}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\columnwidth]{Figures/different_matrix_counts_size 50}
-    \caption{Single thread vs Parallel processing time for different matrix counts all with size 50}
-    \label{fig:different_matrix_counts_size_50}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\columnwidth]{Figures/different_matrix_counts_size 100}
-    \caption{Single thread vs Parallel processing time for different matrix counts all with size 100}
-    \label{fig:different_matrix_counts_size_100}
-\end{figure}
-
-
-\begin{Matlab_float}{Octave function to format a figure and save it to a high quality PDF graph}{FormatFig}
-    function FormatFig(X, Y, File);
-    set(gcf, 'PaperUnits'      , 'inches');
-    set(gcf, 'PaperOrientation', 'landscape');
-    set(gcf, 'PaperSize'       ,       [8, 4]);
-    set(gcf, 'PaperPosition'   , [0, 0, 8, 4]);
-
-    set(gca, 'FontName', 'Times New Roman');
-    set(gca, 'Position', [0.1 0.2 0.85 0.75]);
-
-    xlabel(["\n" X]);
-    ylabel([Y "\n\n"]);
-
-    setenv("GSC", "GSC"); # Eliminates stupid warning
-    print(...
-        [File '.pdf'],...
-    '-dpdf'...
-    );
-    end
-\end{Matlab_float}
-
-\begin{Matlab_float}{Example of how to use the FormatFig function}{PlotExample}
-    figure;                                   # Create a new figure
-    # Some code to calculate the various variables to plot...
-    plot(N, r, 'k', 'linewidth', 4); grid on; # Plot the data
-    xlim([0 360]);                            # Limit the x range
-    ylim([-1 1]);                             # Limit the y range
-    set(gca, 'xtick', [0 90 180 270 360]);    # Set the x labels
-
-    FormatFig(...                             # Call the function with:
-    'Phase shift [\circ]',...                      # The x title
-    'Correlation coefficient',...                  # The y title
-        ['r_vs_N;_f=' num2str(f) ';_P=' num2str(P)]... # Format the file name
-    );
-    close all;                                # Close all open figures
-\end{Matlab_float}
-
-Always remember to include axes text, units and a meaningful caption in your graphs.  When typing units, a \micro{} sign has a tail!  The letter ``u'' is not a valid unit prefix.  When typing resistor values, use the \Ohm{} symbol.
-
-\subsection{Tables}
-Tables are often a convenient means by which to specify lists of parameters.  An example table is presented in table~\ref{tab:Example}. You can use \href{https://www.tablesgenerator.com/}{Tablesgenerator} to make your \LaTeX tables.
-
-\Table{My Informative Table}{lcr}{ % this format specifies 3 columns with left, centre and right allignment
-    \textbf{Heading 1} & \textbf{Heading 2} & \textbf{Heading 3}
-}{
-    Data & 123 & 321 \\
-    Data & 456 & 654 \\
-    Data & 789 & 987 \\
-}{Example}
-
-\subsection{Pictures and Screen-shots}
-When you include screen-shots, pdf\LaTeX{} supports JPG and PNG file formats.  PNG is preferred for screen-shots, as it is a loss-less format.  JPG is preferred for photos, as it results in a smaller file size.  It's generally a good idea to resize photos (not screen-shots) to be no more that 300~dpi, in order to reduce file size.  For 2-column article format papers, this translates to a maximum width of 1024.  \textbf{Never change the aspect ratio of screen-shots and pictures!}
-
-The source used to import a picture in an exact spot, with a caption and labels
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\columnwidth]{Figures/UCT}
-    \caption{An example image}
-    \label{fig:imageExample}
-\end{figure}
-
-\subsection{Maths}
-\LaTeX{} has a very sophisticated maths rendering engine, as illustrated by equation~\ref{eq:Example}.  When talking about approximate answers, never use $\pm{54}$~V, as this implies ``positive or negative 54~V''.  Use $\approx{54}$~V or $\sim{54}$~V instead.
-
-\begin{equation}
-    y = \int_0^\infty e^{x^2} \mathrm{dx}
-    \label{eq:Example}
-\end{equation}
 
 
