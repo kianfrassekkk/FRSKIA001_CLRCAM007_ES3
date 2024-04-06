@@ -1,4 +1,8 @@
+<<<<<<< Updated upstream
 This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.3.15)  5 APR 2024 13:28
+=======
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.6.20)  5 APR 2024 12:31
+>>>>>>> Stashed changes
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -467,6 +471,7 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
+<<<<<<< Updated upstream
 [3
 
  <./Figures/different_matrix_counts_size 100.png>] (Report.aux)
@@ -491,4 +496,43 @@ PDF statistics:
  160 PDF objects out of 1000 (max. 8388607)
  59 named destinations out of 1000 (max. 500000)
  119 words of extra memory for PDF output out of 10000 (max. 10000000)
+=======
+[2 </Users/cameronclark/Documents/UCT/EEE4120F/FRSKIA001_CLRCAM007_ES3/prac_3_2
+/prac_3_2 report/Figures/UCT.jpg>]
+(/Users/cameronclark/Documents/UCT/EEE4120F/FRSKIA001_CLRCAM007_ES3/prac_3_2/pr
+ac_3_2 report/Report.aux)
+Package rerunfilecheck Info: File `Report.out' has not changed.
+(rerunfilecheck)             Checksum: B751F86327F87019163ABE0C9BE4BFD2;1986.
+ ) 
+Here is how much of TeX's memory you used:
+ 12718 strings out of 478994
+ 195842 string characters out of 5858184
+ 773240 words of memory out of 5000000
+ 29908 multiletter control sequences out of 15000+600000
+ 443800 words of font info for 97 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 80i,9n,80p,545b,2171s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/local/texlive/2021/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
+exlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/te
+xlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/tex
+live/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texli
+ve/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive
+/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2
+021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/texlive/2021
+/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2021/te
+xmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2021/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2021/texmf
+-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2021/texmf-dist/fo
+nts/type1/urw/courier/ucrro8a.pfb></usr/local/texlive/2021/texmf-dist/fonts/typ
+e1/urw/times/utmb8a.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/urw/tim
+es/utmr8a.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/urw/times/utmri8a
+.pfb>
+Output written on "/Users/cameronclark/Documents/UCT/EEE4120F/FRSKIA001_CLRCAM0
+07_ES3/prac_3_2/prac_3_2 report/Report.pdf" (2 pages, 743722 bytes).
+PDF statistics:
+ 254 PDF objects out of 1000 (max. 8388607)
+ 232 compressed objects within 3 object streams
+ 103 named destinations out of 1000 (max. 500000)
+ 118 words of extra memory for PDF output out of 10000 (max. 10000000)
+>>>>>>> Stashed changes
 

@@ -54,21 +54,21 @@ float matrix_multiply(int Size, int MATRIX_COUNT, bool displayMatrices) {
 
     //MATRIX CREATION ALLOWING FOR DIFFERENT SIZES AND COUNTS
     int matrix_size = Size * Size;
-    int matrices[MATRIX_COUNT][matrix_size];
+    int* matrices = new int[MATRIX_COUNT * matrix_size];
 
     for (int m = 0; m < MATRIX_COUNT; m++) {
-        createKnownSquareMatrix(Size, matrices[m], displayMatrices);
+        createKnownSquareMatrix(Size, matrices + m * matrix_size, displayMatrices);
         if (displayMatrices) {
             cout << "Number of elements in matrix 1: " << matrix_size << "\n";
             cout << "Dimensions of matrix 1: " << Size << "x" << Size << "\n";
-            cout << "Matrix 1 pointer: " << matrices[m] << "\n";
+            cout << "Matrix 1 pointer: " << matrices + m * matrix_size << "\n";
         }
     }
 
     start = clock(); //start running clock
 	
 	int matrix_output[matrix_size], matrixA[matrix_size], cell;
-    for (int c = 0; c < matrix_size; c++) matrixA[c] = matrices[0][c];
+    for (int c = 0; c < matrix_size; c++) matrixA[c] = matrices[c];
 
 	//TODO: code your golden standard matrix multiplication here
     for (int m = 1; m < MATRIX_COUNT; m++) {
@@ -76,7 +76,7 @@ float matrix_multiply(int Size, int MATRIX_COUNT, bool displayMatrices) {
             for (int col = 0; col < Size; col++) {
                 cell = 0;
                 for (int dot = 0; dot < Size; dot++) {
-                    cell += matrixA[row * Size + dot] * matrices[m][col + dot * Size];
+                    cell += matrixA[row * Size + dot] * matrices[m * matrix_size + col + dot * Size];
                 }
                 matrix_output[row * Size + col] = cell;
             }
@@ -96,7 +96,9 @@ float matrix_multiply(int Size, int MATRIX_COUNT, bool displayMatrices) {
 		}
 	}
 
+    delete[] matrices;
     end = clock();
+
 	return ((float) end - (float) start)/CLOCKS_PER_SEC;
 }
 
@@ -109,6 +111,7 @@ int main(void) {
     int count_sizes[] = {5, 10, 20, 50, 100};
 
     float time;
+    /*
     printf("<------------------------------------------------------->\n");
     printf("Run time for sizes between %d and %d\n\n", size_min, size_max);
     matrix_multiply(size_min, 2, false);
@@ -132,5 +135,13 @@ int main(void) {
             printf("%0.8f\n", time / averages);
         }
     }
+    */
 
+    for (int count = 5; count <= 100; count += 5) {
+        matrix_multiply(10, count, false);
+        for (int size = 5; size <= 200; size += 5) {
+            printf("%0.6f;", matrix_multiply(size, count, false));
+        }
+        printf("|");
+    }
 }

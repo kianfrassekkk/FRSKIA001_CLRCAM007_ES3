@@ -57,14 +57,14 @@ float matrix_multiply(int Size, int MATRIX_COUNT, bool displayMatrices) {
 
 	//MATRIX CREATION ALLOWING FOR DIFFERENT SIZES AND COUNTS
 	int matrix_size = Size * Size;
-    int matrices[MATRIX_COUNT][matrix_size];
+    int* matrices = new int[MATRIX_COUNT * matrix_size];
 
     for (int m = 0; m < MATRIX_COUNT; m++) {
-        createKnownSquareMatrix(Size, matrices[m], displayMatrices);
+        createKnownSquareMatrix(Size, matrices + m * matrix_size, displayMatrices);
         if (displayMatrices) {
             cout << "Number of elements in matrix 1: " << matrix_size << "\n";
             cout << "Dimensions of matrix 1: " << Size << "x" << Size << "\n";
-            cout << "Matrix 1 pointer: " << matrices[m] << "\n";
+            cout << "Matrix 1 pointer: " << matrices + m * matrix_size << "\n";
         }
     }
 
@@ -177,7 +177,7 @@ float matrix_multiply(int Size, int MATRIX_COUNT, bool displayMatrices) {
     cl_mem matrixA_buffer, matrixB_buffer, output_buffer;
 
     int matrix_output[matrix_size], matrixA[matrix_size];
-    for (int c = 0; c < matrix_size; c++) matrixA[c] = matrices[0][c];
+    for (int c = 0; c < matrix_size; c++) matrixA[c] = matrices[c];
 
     for (int m = 1; m < MATRIX_COUNT; m++) {
         //TODO: create matrixA_buffer, matrixB_buffer and output_buffer, with clCreateBuffer()
@@ -190,7 +190,7 @@ float matrix_multiply(int Size, int MATRIX_COUNT, bool displayMatrices) {
         matrixB_buffer = clCreateBuffer(context,
                                                CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR,
                                                matrix_size * sizeof(int),
-                                               &matrices[m],
+                                               matrices + m * matrix_size,
                                                &err);
 
         output_buffer = clCreateBuffer(context,
@@ -256,6 +256,7 @@ float matrix_multiply(int Size, int MATRIX_COUNT, bool displayMatrices) {
 	clReleaseContext(context);
 
     end = clock();
+    delete[] matrices;
 	return ((float) end - (float) start)/CLOCKS_PER_SEC;
 }
 
@@ -279,7 +280,7 @@ int main(void) {
         }
         printf("%0.8f\n", time / averages);
     }
-*/
+
 
     for (int count_size : count_sizes) {
         printf("<------------------------------------------------------->\n");
@@ -293,5 +294,12 @@ int main(void) {
             printf("%0.8f\n", time / averages);
         }
     }
-
+*/
+    for (int count = 5; count <= 100; count += 5) {
+        matrix_multiply(10, count, false);
+        for (int size = 5; size <= 200; size += 5) {
+            printf("%0.6f;", matrix_multiply(size, count, false));
+        }
+        printf("|");
+    }
 }
