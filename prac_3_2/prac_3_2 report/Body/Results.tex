@@ -1,8 +1,9 @@
 \section{Results}
 
-\subsection{ Multiplying two matrices with different sizes}
+\subsection{Multiplying two matrices with different sizes}\label{subsec:res-sizes}
 This section discusses the time taken both for parallelized and single thread  multiplying two matrices of the same size.
-The test repeated the multiplication with the size of the matrix increasing each time.
+This test repeated the multiplication with the size of the matrix increasing each time from a size of 2 to a size of 200.
+Both the single thread and parallel programs were run 20 times per size and an average was taken for maximum accuracy
 The results of the multiplication are shown in figure \ref{fig:Single_thread_vs_Parallel_processing_time}.
 
 \begin{figure}[H]
@@ -12,67 +13,89 @@ The results of the multiplication are shown in figure \ref{fig:Single_thread_vs_
     \label{fig:Single_thread_vs_Parallel_processing_time}
 \end{figure}
 
-The results show that the time taken for single-thread matrix multiplication is initially faster than parallelized multiplication up to size of the matrix around 117.
-After size 117, parallelized multiplication becomes faster. This is indicated on the graph by time taken for the single thread processing increases with a larger exponential scale.
-These results occur because the time due to overhead of setting up parallel processing is 4 ms which is larger than the time taken when running the program with small sized matrices on a single thread.
-However, as the matrix size increases, the time taken for single-thread multiplication increases at a faster exponentially rate, resulting in longer processing time.
+The results in \ref{fig:Single_thread_vs_Parallel_processing_time} clearly show that the time taken for single threaded matrix multiplication is initially faster than parallelized multiplication up to size of the matrix but after a certain threshold the parallelized program becomes faster.
+With the hardware used in this report, the threshold was roughly at size 100.
 
-% should include a speed up graph here
 
-\subsection{ Multiplying different number of matrices with same sizes}
+It can be seen that both graphs appear to follow an exponential or power trend, with the parallel program having a much lower gain than the single thread program.
+Additionally, the single thread program times appears to start at close to 0 ms for the smallest matrix size while the parallel program times appear to start at around 4 ms.
+This is due to the time required to set up the parallel program is 4 ms which is longer than that of the single thread program.
+
+
+However, as the matrix size increases, the time taken for single thread program increases at a faster exponential rate compared to that of the parallel program, resulting in the parallel program eventually overtaking the single thread program.
+
+\subsection{Multiplying different numbers of matrices of the same size}
 This section discusses the time taken for parallelized verses single thread multiplying different numbers of matrices of the same size.
+Each test was conducted on a different matrix size (5, 10, 20, 50 or 100) and was run with a matrix count of 5 to 45.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\columnwidth]{Figures/different_matrix_counts_size 5.png}
+    \includegraphics[width=1\columnwidth]{Figures/different_matrix_counts_size_5}
     \caption{Single thread vs Parallel processing time for different matrix counts all with size 10}
     \label{fig:different_matrix_counts_size 5}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\columnwidth]{Figures/different_matrix_counts_size 10.png}
+    \includegraphics[width=1\columnwidth]{Figures/different_matrix_counts_size_10}
     \caption{Single thread vs Parallel processing time for different matrix counts all with size 10}
     \label{fig:different_matrix_counts_size 10}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\columnwidth]{Figures/different_matrix_counts_size 20}
+    \includegraphics[width=1\columnwidth]{Figures/different_matrix_counts_size_20}
     \caption{Single thread vs Parallel processing time for different matrix counts all with size 20}
     \label{fig:different_matrix_counts_size 20}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\columnwidth]{Figures/different_matrix_counts_size 50}
+    \includegraphics[width=1\columnwidth]{Figures/different_matrix_counts_size_50}
     \caption{Single thread vs Parallel processing time for different matrix counts all with size 50}
     \label{fig:different_matrix_counts_size 50}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\columnwidth]{Figures/different_matrix_counts_size 100}
+    \includegraphics[width=1\columnwidth]{Figures/different_matrix_counts_size_100}
     \caption{Single thread vs Parallel processing time for different matrix counts all with size 100}
     \label{fig:different_matrix_counts_size 100}
 \end{figure}
 
 Looking at the results in figures: \ref{fig:different_matrix_counts_size 5}, \ref{fig:different_matrix_counts_size 10}, \ref{fig:different_matrix_counts_size 20}, \ref{fig:different_matrix_counts_size 50} and \ref{fig:different_matrix_counts_size 100},
-It can be seen that there are two different types of over heads the openCl setup overheads and the overheads for starting the kernel.
-The openCl setup overheads are the same for all the different matrix counts, this is because the openCl setup is done once and the same for all the different matrix counts.
-This is indicated in our graph because the time taken at matrix count of 5 remain around 5ms independent of matrix size.
-
-The overhead of starting the kernel to run seem to result in a linear increase in time  as the matrix count increases.
-This occurs because each time the a new test is run a the buffer need to be re initialized and the kernel need to be started.
-This can be seen in the graph because both the parallelized and single thread  result in linear increase in time as the matrix count increases.
-however percentage of time spent parallelizing decreases as the matrix count increases.
-This is indicated in the in figure \ref{fig:different_matrix_counts_size 50} where the linear graf of the time take vs matrix cont for parallelized multiplication
-and single thread multiplication intersect. in other words there is an increase in efficiency of parallelized multiplication as the matrix count increases.
-
-Looking at all the graph it can be seen that as the matrix size increases the speed up for parallelized multiplication vs the single thread multiplication improves.
-In other words at smaller matrix sizes the time taken for parallelized multiplication is longer than the time taken for single thread multiplication
-and at larger matrix sizes the time taken for parallelized multiplication is shorter than the time taken for single thread multiplication.
+it can be seen that both the single and parallel programs' time follow an approximate linear trend and that the parallel program has an initial overhead of around 5 ms with a matrix count of 5.
+While the graphs cannot extend to where zero matrices are multiplied together, they can be extrapolated to show that the parallel program always has an initial overhead that is significantly higher than the single thread program, even in figure \ref{fig:different_matrix_counts_size 100}.
 
 
+It should be noted that the overhead for the parallel program can be broken up into to parts: the overhead of setting up the OpenCL device and programs and the overhead of starting each instance of the kernel program.
+The latter, in conjunction with the runtime of the kernel program itself, occurs once per matrix multiplication and is the reason that the parallel program's time follows a linear trend.
+By extension, the single threaded program also follows a linear trend for similar reasoning.
 
 
+It also should be noted that the speed of the parallel program increases compared to the single thread program as the matrix count increases and as the matrix size increases.
+The speed up with the increase of matrix count is due to the same reasoning as in the first test, where the single thread program's time increases at a fast rate eventually allowing for the parallel program to overtake it.
+This is shown in figure \ref{fig:different_matrix_counts_size 50} where the threshold point was around 40 matrices of size 50x50 being multiplied together.
+
+
+The speed up with increasing matrix sizes, which is the more significant in this test, is due to the percentage of parallelism in the parallel program increasing as the matrix size increases.
+The increase in parallelism in due to the parallel program has three parts as mentioned above: the OpenCl setup overhead which stays constant, the kernel starting overhead which scales linearly with matrix count, and the kernel program which scales exponentially with matrix size but still at a slower rate than the single thread program as shown in section \ref{subsec:res-sizes}.
+These factors combined cause an increase in parallelism with increasing matrix size which causes the parallel program to become faster than the single thread program as the matrix count increases.
+
+
+\subsection{Multiplying different numbers of matrices with different sizes}
+This section is a combination of the two above which produces the graph shown in figure \ref{fig:2d}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\columnwidth]{Figures/speedupsurf}
+    \caption{A Surface plot showing the speed up from single thread to parallel matrix multiplication over different numbers of matrices of different size multiplied together}
+    \label{fig:2d}
+\end{figure}
+
+This show that there is a clear threshold line of matrix size and matrix count where is it more efficient to parallelize matrix multiplication for any increase in either parameter.
+With the hardware used in this report, the line extends roughly between 2 matrices of size 100x100 and 60 matrices of size 50x50 multiplied together.
+
+
+The graph also indicates that for a very high number of matrices it suddenly become more efficient to use a single thread program which appears counter intuitive.
+This could be due to 50 matrices of size 50x50 taking up too much space to be stored on the GPU cache on the hardware used in this report, and thus additional time is taken to transfer the data to the GPU cache; however further testing will be required to confirm this hypothesis.

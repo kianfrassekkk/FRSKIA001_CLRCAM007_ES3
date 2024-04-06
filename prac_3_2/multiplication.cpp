@@ -261,15 +261,15 @@ float matrix_multiply(int Size, int MATRIX_COUNT, bool displayMatrices) {
 }
 
 int main(void) {
-#define averages 15
+#define averages 20
 #define size_min 2
 #define size_max 201
 #define count_min 2
 #define count_max 51
-    int count_sizes[] = {   100};
+    int count_sizes[] = {   20};
 
     float time;
-/*
+
     printf("<------------------------------------------------------->\n");
     printf("Run time for sizes between %d and %d\n\n", size_min, size_max);
     matrix_multiply(size_min, 2, false);
@@ -281,7 +281,7 @@ int main(void) {
         printf("%0.8f\n", time / averages);
     }
 
-
+/*
     for (int count_size : count_sizes) {
         printf("<------------------------------------------------------->\n");
         printf("\nRun time for count between %d and %d at size %d\n\n", count_min, count_max, count_size);
@@ -294,7 +294,8 @@ int main(void) {
             printf("%0.8f\n", time / averages);
         }
     }
-*/
+
+
     for (int count = 5; count <= 100; count += 5) {
         matrix_multiply(10, count, false);
         for (int size = 5; size <= 200; size += 5) {
@@ -302,4 +303,5 @@ int main(void) {
         }
         printf("|");
     }
+    */
 }
