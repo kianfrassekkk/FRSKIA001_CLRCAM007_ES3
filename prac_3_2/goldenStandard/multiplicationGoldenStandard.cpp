@@ -122,7 +122,7 @@ int main(void) {
         }
         printf("%0.8f\n", time / averages);
     }
-/*
+
     for (int count_size : count_sizes) {
         printf("<------------------------------------------------------->\n");
         printf("\nRun time for count between %d and %d at size %d\n\n", count_min, count_max, count_size);
@@ -135,13 +135,15 @@ int main(void) {
             printf("%0.8f\n", time / averages);
         }
     }
-    */
 
-//    for (int count = 5; count <= 100; count += 5) {
-//        matrix_multiply(10, count, false);
-//        for (int size = 5; size <= 200; size += 5) {
-//            printf("%0.6f;", matrix_multiply(size, count, false));
-//        }
-//        printf("|");
-//    }
+
+    printf("<------------------------------------------------------->\n");
+    printf("\nRun time for count between %d and %d and size between %d and %d\n\n", count_min, count_max, size_min, size_max);
+    for (int count = 5; count <= 100; count += 5) {
+        matrix_multiply(10, count, false);
+        for (int size = 5; size <= 200; size += 5) {
+            printf("%0.6f;", matrix_multiply(size, count, false));
+        }
+        printf("|");
+    }
 }
