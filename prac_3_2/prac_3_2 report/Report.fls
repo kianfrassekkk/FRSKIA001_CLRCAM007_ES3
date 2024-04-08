@@ -261,38 +261,42 @@ INPUT C:\Users\kianf\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\courier\pcrro7
 INPUT C:\Users\kianf\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\courier\pcrro8r.tfm
 INPUT C:\Users\kianf\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\courier\pcrr7t.vf
 INPUT C:\Users\kianf\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\courier\pcrr8r.tfm
-INPUT .\Figures\different_matrix_counts_size 5.png
-INPUT .\Figures\different_matrix_counts_size 5.png
-INPUT .\Figures\different_matrix_counts_size 5.png
-INPUT .\Figures\different_matrix_counts_size 5.png
-INPUT .\Figures\different_matrix_counts_size 5.png
-INPUT .\Figures\different_matrix_counts_size 5.png
-INPUT .\Figures\different_matrix_counts_size 5.png
-INPUT .\Figures\different_matrix_counts_size 10.png
-INPUT .\Figures\different_matrix_counts_size 10.png
-INPUT .\Figures\different_matrix_counts_size 10.png
-INPUT .\Figures\different_matrix_counts_size 10.png
-INPUT .\Figures\different_matrix_counts_size 10.png
-INPUT .\Figures\different_matrix_counts_size 10.png
-INPUT .\Figures\different_matrix_counts_size 10.png
-INPUT .\Figures\different_matrix_counts_size 20.png
-INPUT .\Figures\different_matrix_counts_size 20.png
-INPUT .\Figures\different_matrix_counts_size 20.png
-INPUT .\Figures\different_matrix_counts_size 20.png
-INPUT .\Figures\different_matrix_counts_size 20.png
-INPUT .\Figures\different_matrix_counts_size 20.png
-INPUT .\Figures\different_matrix_counts_size 50.png
-INPUT .\Figures\different_matrix_counts_size 50.png
-INPUT .\Figures\different_matrix_counts_size 50.png
-INPUT .\Figures\different_matrix_counts_size 50.png
-INPUT .\Figures\different_matrix_counts_size 50.png
-INPUT .\Figures\different_matrix_counts_size 50.png
-INPUT .\Figures\different_matrix_counts_size 100.png
-INPUT .\Figures\different_matrix_counts_size 100.png
-INPUT .\Figures\different_matrix_counts_size 100.png
-INPUT .\Figures\different_matrix_counts_size 100.png
-INPUT .\Figures\different_matrix_counts_size 100.png
-INPUT .\Figures\different_matrix_counts_size 100.png
+INPUT .\Figures\different_matrix_counts_size_5.jpg
+INPUT .\Figures\different_matrix_counts_size_5.jpg
+INPUT .\Figures\different_matrix_counts_size_5.jpg
+INPUT .\Figures\different_matrix_counts_size_5.jpg
+INPUT .\Figures\different_matrix_counts_size_5.jpg
+INPUT .\Figures\different_matrix_counts_size_5.jpg
+INPUT .\Figures\different_matrix_counts_size_10.jpg
+INPUT .\Figures\different_matrix_counts_size_10.jpg
+INPUT .\Figures\different_matrix_counts_size_10.jpg
+INPUT .\Figures\different_matrix_counts_size_10.jpg
+INPUT .\Figures\different_matrix_counts_size_10.jpg
+INPUT .\Figures\different_matrix_counts_size_10.jpg
+INPUT .\Figures\different_matrix_counts_size_20.jpg
+INPUT .\Figures\different_matrix_counts_size_20.jpg
+INPUT .\Figures\different_matrix_counts_size_20.jpg
+INPUT .\Figures\different_matrix_counts_size_20.jpg
+INPUT .\Figures\different_matrix_counts_size_20.jpg
+INPUT .\Figures\different_matrix_counts_size_20.jpg
+INPUT .\Figures\different_matrix_counts_size_50.jpg
+INPUT .\Figures\different_matrix_counts_size_50.jpg
+INPUT .\Figures\different_matrix_counts_size_50.jpg
+INPUT .\Figures\different_matrix_counts_size_50.jpg
+INPUT .\Figures\different_matrix_counts_size_50.jpg
+INPUT .\Figures\different_matrix_counts_size_50.jpg
+INPUT .\Figures\different_matrix_counts_size_100.jpg
+INPUT .\Figures\different_matrix_counts_size_100.jpg
+INPUT .\Figures\different_matrix_counts_size_100.jpg
+INPUT .\Figures\different_matrix_counts_size_100.jpg
+INPUT .\Figures\different_matrix_counts_size_100.jpg
+INPUT .\Figures\different_matrix_counts_size_100.jpg
+INPUT .\Figures\speedupsurf.jpg
+INPUT .\Figures\speedupsurf.jpg
+INPUT .\Figures\speedupsurf.jpg
+INPUT .\Figures\speedupsurf.jpg
+INPUT .\Figures\speedupsurf.jpg
+INPUT .\Figures\speedupsurf.jpg
 INPUT .\Body\Conclusion.tex
 INPUT .\Body\Conclusion.tex
 INPUT .\Body\Conclusion.tex
