@@ -8,7 +8,7 @@ The results of the multiplication are shown in figure \ref{fig:Single_thread_vs_
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\columnwidth]{Figures/Single_thread_vs_Parallel_processing_time_for_different_matrix_sizes}
+    \includegraphics[width=0.8\columnwidth]{Figures/Single_thread_vs_Parallel_processing_time_for_different_matrix_sizes}
     \caption{Graph of single thread vs Parallel processing time for different matrix sizes}
     \label{fig:Single_thread_vs_Parallel_processing_time}
 \end{figure}
@@ -27,38 +27,39 @@ However, as the matrix size increases, the time taken for single thread program 
 \subsection{Multiplying different numbers of matrices of the same size}
 This section discusses the time taken for parallelized verses single thread multiplying different numbers of matrices of the same size.
 Each test was conducted on a different matrix size (5, 10, 20, 50 or 100) and was run with a matrix count of 5 to 45.
+Both the single thread and parallel programs were run 20 times per count and an average was taken for maximum accuracy
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\columnwidth]{Figures/different_matrix_counts_size_5}
+    \includegraphics[width=0.8\columnwidth]{Figures/different_matrix_counts_size_5}
     \caption{Single thread vs Parallel processing time for different matrix counts all with size 10}
     \label{fig:different_matrix_counts_size 5}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\columnwidth]{Figures/different_matrix_counts_size_10}
+    \includegraphics[width=0.8\columnwidth]{Figures/different_matrix_counts_size_10}
     \caption{Single thread vs Parallel processing time for different matrix counts all with size 10}
     \label{fig:different_matrix_counts_size 10}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\columnwidth]{Figures/different_matrix_counts_size_20}
+    \includegraphics[width=0.8\columnwidth]{Figures/different_matrix_counts_size_20}
     \caption{Single thread vs Parallel processing time for different matrix counts all with size 20}
     \label{fig:different_matrix_counts_size 20}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\columnwidth]{Figures/different_matrix_counts_size_50}
+    \includegraphics[width=0.8\columnwidth]{Figures/different_matrix_counts_size_50}
     \caption{Single thread vs Parallel processing time for different matrix counts all with size 50}
     \label{fig:different_matrix_counts_size 50}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\columnwidth]{Figures/different_matrix_counts_size_100}
+    \includegraphics[width=0.8\columnwidth]{Figures/different_matrix_counts_size_100}
     \caption{Single thread vs Parallel processing time for different matrix counts all with size 100}
     \label{fig:different_matrix_counts_size 100}
 \end{figure}
@@ -84,7 +85,8 @@ These factors combined cause an increase in parallelism with increasing matrix s
 
 
 \subsection{Multiplying different numbers of matrices with different sizes}
-This section is a combination of the two above which produces the graph shown in figure \ref{fig:2d}
+This section is a combination of the two above which produces the graph shown in figure \ref{fig:2d}.
+Both the single thread and parallel programs were run only run once as running an average of multiple tests on each node reduces the total number of unique nodes that can be tested using the same amount of time and resources, and using more data points is more valuable to this report.
 
 \begin{figure}[H]
     \centering

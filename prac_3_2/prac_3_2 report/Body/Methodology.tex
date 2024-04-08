@@ -61,8 +61,48 @@ Lastly, there is an additional for loop in the OpenCL setup code which allows fo
  }
 \end{OpenCL}
 
+\subsubsection{Code Verification}
+Both the single thread and parallel program will undergo tests to ensure their correct functionality before their performances are evaluated.
+The two programs will carry out the following known matrix multiplication as well as a similar version with matrix sizes of 5:
+
+\vspace{5pt}
+\begin{bmatrix}
+ 1 & 2 & 3 \\
+ 1 & 2 & 3 \\
+ 1 & 2 & 3
+\end{bmatrix}
+\begin{bmatrix}
+ 2 & 4 & 6 \\
+ 2 & 4 & 6 \\
+ 2 & 4 & 6
+\end{bmatrix}
+\begin{bmatrix}
+ 1 & 2 & 3 \\
+ 1 & 2 & 3 \\
+ 1 & 2 & 3
+\end{bmatrix}
+=
+\begin{bmatrix}
+ 72 & 144 & 216 \\
+ 72 & 144 & 216 \\
+ 72 & 144 & 216
+\end{bmatrix}
+\vspace{5pt}
+
 \subsection{Experiment Procedure}
 
 To evaluate the performance of the single thread versus parallel program two experiments will be conducted and evaluate the difference in time taken and the speed up of the parallel program.
 The first will be multiplying two matrices with different sizes, and the second will be to multiply different numbers of successive matrices of the same size.
+All matrices of any size will follow the following format for a matrix of size $n \times n$:
+
+\vspace{5pt}
+\begin{bmatrix}
+ 1 & 2 & \dots & n\\
+ 1 & 2 & \dots & n\\
+ \vdots & \vdots & \ddots & \vdots\\
+ 1 & 2 & \dots & n\\
+\end{bmatrix}
+\vspace{5pt}
+
+Importantly, both tests will take an average of several tests in order to maximise accuracy and the parallel program will be run additional times before starting its data collection to warm up the cache.
 Both methods of testing have different amounts of parallelization and different amounts of overhead and should give good understanding of the effectiveness of parallelizing matrix multiplication code.
