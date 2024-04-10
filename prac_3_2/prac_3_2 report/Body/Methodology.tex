@@ -13,23 +13,23 @@ It requires two for loops which iterate over the row and column of the result ma
 There is one additional for loop which allows for multiplying a given number of matrices together
 
 \begin{OpenCL}{C++ code to perform single threaded matrix multiplication}{C_Matrix_Mult}
- int matrix_output[matrix_size], matrixA[matrix_size], cell;
- for (int c = 0; c < matrix_size; c++) matrixA[c] = matrices[0][c];
+    int matrix_output[matrix_size], matrixA[matrix_size], cell;
+    for (int c = 0; c < matrix_size; c++) matrixA[c] = matrices[0][c];
 
- //Matrix multiplication
- for (int m = 1; m < MATRIX_COUNT; m++) {
-  for (int row = 0; row < Size; row++) {
-   for (int col = 0; col < Size; col++) {
+    //Matrix multiplication
+    for (int m = 1; m < MATRIX_COUNT; m++) {
+    for (int row = 0; row < Size; row++) {
+    for (int col = 0; col < Size; col++) {
     cell = 0;
     for (int dot = 0; dot < Size; dot++) {
-     cell += matrixA[row * Size + dot] * matrices[m][col + dot * Size];
-    }
+            cell += matrixA[row * Size + dot] * matrices[m][col + dot * Size];
+        }
     matrix_output[row * Size + col] = cell;
-   }
-  }
-  //rewrite matrix A with output so loop can re-iterate
-  for (int c = 0; c < matrix_size; c++) matrixA[c] = matrix_output[c];
- }
+    }
+    }
+    //rewrite matrix A with output so loop can re-iterate
+    for (int c = 0; c < matrix_size; c++) matrixA[c] = matrix_output[c];
+    }
 \end{OpenCL}
 
 \subsubsection{Parallel Program}
@@ -40,25 +40,25 @@ Lastly, there is an additional for loop in the OpenCL setup code which allows fo
 
 
 \begin{OpenCL}{OpenCL kernel code to perform parallel threaded matrix multiplication}{OpenCL_Matrix_Mult}
- __kernel void matrixMultiplication(
-  __global int* matrixA_buffer,
-  __global int* matrixB_buffer,
-  __global int* output_buffer
- ){
-  int workItemNum = get_global_id(0); //Work item ID
-  int workGroupNum = get_group_id(0); //Work group ID
-  int localGroupID = get_local_id(0); //Work items ID within each work group
-  int localSize = get_local_size(0); //Get the work number of items per group
+    __kernel void matrixMultiplication(
+    __global int* matrixA_buffer,
+    __global int* matrixB_buffer,
+    __global int* output_buffer
+    ){
+            int workItemNum = get_global_id(0); //Work item ID
+            int workGroupNum = get_group_id(0); //Work group ID
+            int localGroupID = get_local_id(0); //Work items ID within each work group
+            int localSize = get_local_size(0); //Get the work number of items per group
 
-  //Row <=> workGroupNum; Column <=> localGroupID
-  //workItemNum <=> workGroup * localSize + localGroupID
-  int cell = 0;
-  for (int i = 0; i < localSize; i++) {
-   cell = cell + *(matrixA_buffer + workGroupNum * localSize + i) *
-    *(matrixB_buffer + localGroupID + i * localSize);
-  }
-  *(output_buffer + workItemNum) = cell;
- }
+            //Row <=> workGroupNum; Column <=> localGroupID
+            //workItemNum <=> workGroup * localSize + localGroupID
+            int cell = 0;
+            for (int i = 0; i < localSize; i++) {
+                    cell = cell + *(matrixA_buffer + workGroupNum * localSize + i) *
+                    *(matrixB_buffer + localGroupID + i * localSize);
+                }
+            *(output_buffer + workItemNum) = cell;
+        }
 \end{OpenCL}
 
 \subsubsection{Code Verification}
@@ -66,27 +66,29 @@ Both the single thread and parallel program will undergo tests to ensure their c
 The two programs will carry out the following known matrix multiplication as well as a similar version with matrix sizes of 5:
 
 \vspace{5pt}
-\begin{bmatrix}
- 1 & 2 & 3 \\
- 1 & 2 & 3 \\
- 1 & 2 & 3
-\end{bmatrix}
-\begin{bmatrix}
- 2 & 4 & 6 \\
- 2 & 4 & 6 \\
- 2 & 4 & 6
-\end{bmatrix}
-\begin{bmatrix}
- 1 & 2 & 3 \\
- 1 & 2 & 3 \\
- 1 & 2 & 3
-\end{bmatrix}
-=
-\begin{bmatrix}
- 72 & 144 & 216 \\
- 72 & 144 & 216 \\
- 72 & 144 & 216
-\end{bmatrix}
+$
+    \begin{bmatrix}
+        1 & 2 & 3 \\
+        1 & 2 & 3 \\
+        1 & 2 & 3
+    \end{bmatrix}
+    \begin{bmatrix}
+        2 & 4 & 6 \\
+        2 & 4 & 6 \\
+        2 & 4 & 6
+    \end{bmatrix}
+    \begin{bmatrix}
+        1 & 2 & 3 \\
+        1 & 2 & 3 \\
+        1 & 2 & 3
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        72 & 144 & 216 \\
+        72 & 144 & 216 \\
+        72 & 144 & 216
+    \end{bmatrix}
+$
 \vspace{5pt}
 
 \subsection{Experiment Procedure}
@@ -96,13 +98,15 @@ The first will be multiplying two matrices with different sizes, and the second 
 All matrices of any size will follow the following format for a matrix of size $n \times n$:
 
 \vspace{5pt}
-\begin{bmatrix}
- 1 & 2 & \dots & n\\
- 1 & 2 & \dots & n\\
- \vdots & \vdots & \ddots & \vdots\\
- 1 & 2 & \dots & n\\
-\end{bmatrix}
+$
+    \begin{bmatrix}
+        1      & 2      & \dots  & n      \\
+        1      & 2      & \dots  & n      \\
+        \vdots & \vdots & \ddots & \vdots \\
+        1      & 2      & \dots  & n      \\
+    \end{bmatrix}
+$
 \vspace{5pt}
 
-Importantly, both tests will take an average of several tests in order to maximise accuracy and the parallel program will be run additional times before starting its data collection to warm up the cache.
+Importantly, both tests will take an average of several tests in order to maximize accuracy and the parallel program will be run additional times before starting its data collection to warm up the cache.
 Both methods of testing have different amounts of parallelization and different amounts of overhead and should give good understanding of the effectiveness of parallelizing matrix multiplication code.
