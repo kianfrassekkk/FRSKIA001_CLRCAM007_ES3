@@ -14,10 +14,12 @@
 `define END_BIT 4'b1000 //data bytes is only has bits 0-7, so reaching bit 8 means the byte has finished.
 
 module TSC (
+    //control lines for this module
     input wire clk,
     input wire reset,
     input wire start,
     input wire SBF,
+    //watching register for test bench
     output reg[2:0] state_out,
     output reg adc_request_out, 
     output reg adc_ready_out,
