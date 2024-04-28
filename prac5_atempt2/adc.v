@@ -1,7 +1,7 @@
 // TSC simulation module
 
 // set simulation time:
-`timescale 1ns / 1ps
+`timescale 1ns / 1ns
 
 module ADC (
     input wire req,      // Request signal from TSC
