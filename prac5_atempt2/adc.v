@@ -1,8 +1,7 @@
 // TSC simulation module
 
-// set simulation time:
-`timescale 1ns / 1ns
-
+`define VALUE_COUNT 256
+  
 module ADC (
     input wire req,      // Request signal from TSC
     input wire rst,      // Reset signal for ADC
@@ -10,38 +9,36 @@ module ADC (
     output reg [7:0] dat // Data output from the array
 );
 
-// Constant array of values (16 data values)
-  // reg [7:0]
-  // integer adc_data [15:0] = {
-  reg [0:7] adc_data [0:15];
+  reg [0:7] adc_data [0:`VALUE_COUNT-1];
+  
+  integer fd, i, j;// File descriptor
+
+  initial begin
+    // Open the CSV file for reading (replace "adc_data.csv" with your actual filename)
+    fd = $fopen("adc_data.csv", "r");
     
-  initial
-    begin 
-      // hard-coded ADC values stored in adc_data
-      // it seams iVerilog doesn't want to initialize an array
-      adc_data[ 0] = 8'h8B;
-      adc_data[ 1] = 8'h8C;
-      adc_data[ 2] = 8'h99;
-      adc_data[ 3] = 8'h9B;
-      adc_data[ 4] = 8'h93;
-      adc_data[ 5] = 8'h82;
-      adc_data[ 6] = 8'h97;
-      adc_data[ 7] = 8'h90;
-      adc_data[ 8] = 8'h9F;
-      adc_data[ 9] = 8'hD7;
-      adc_data[10] = 8'h8D;
-      adc_data[11] = 8'h9C;
-      adc_data[12] = 8'h85;
-      adc_data[13] = 8'h8A;
-      adc_data[14] = 8'h91;
-      adc_data[15] = 8'h8C;
+    // Check if file open was successful
+    if (fd == -1) begin
+      $display("Error opening file!");
+      $finish;  // Exit simulation on error
     end
+    
+    // Loop through each element of the array
+    for (i = 0; i < `VALUE_COUNT; i++) begin
+      // Read a line from the file
+      j = $fscanf(fd, "%d", adc_data[i]);
+    end
+
+    // Close the file
+    $fclose(fd);
+  end
+
   
   
   reg [7:0] idx = 0; // Index to access the array
   
 
-always @(posedge req or posedge rst) begin
+always @(posedge req or negedge req or posedge rst) begin
     if (rst) begin
         // Reset the device
         rdy <= 0;
@@ -49,7 +46,7 @@ always @(posedge req or posedge rst) begin
         idx <= 0; // Reset array index
     end else if (req) begin
         // Read data from the sample array using modular arithmetic
-        dat <= adc_data[idx % 16]; // Wrap around if idx exceeds 15
+        dat <= adc_data[idx % `VALUE_COUNT]; // Wrap around if idx exceeds 15
         idx <= idx + 1;
 
         // Raise RDY line

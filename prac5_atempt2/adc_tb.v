@@ -1,12 +1,11 @@
 // Test bench simulator for TSC
 
 // set simulation time:
-`timescale 1ns / 1ns
-`include "adc.v"
+`timescale 1ns / 1ps
 
 module ADC_tb;
 
-  // Parameters
+    // Parameters
     parameter CLK_PERIOD = 10; // Clock period in ns
 
     // Signals
@@ -26,16 +25,13 @@ module ADC_tb;
     // Clock generation
     reg clk = 0;
   
-    always #((CLK_PERIOD / 2)) clk = ~clk;
+    //always #((CLK_PERIOD / 2)) clk = ~clk;
 
     // Testbench logic
-    integer i;
     initial begin
-       // rest of your code..
-      $dumpfile("wave.vcd");
-      $dumpvars(0, ADC_tb);  
+      integer i;
         // Reset ADC
-      $display("Started ads");
+      $display("Started");
         rst = 1;
         req = 0;
         #10; // Wait for 10 ns
