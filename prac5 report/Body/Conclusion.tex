@@ -1,7 +1,8 @@
 \section{Conclusion}
 
-This report shows that for multiplying small matrix sizes and counts, single-threaded matrix multiplication is faster, however, when the matrix sizes and counts are large enough, parallelized matrix multiplication becomes faster due to its overhead becoming negligible relative to its computation time.
-
-The overheads for the parallel matrix multiplication program are the OpenCL setup overhead and kernel startup overhead, with the former being constant and the latter increasing linearly with matrix count.
-
-Lastly, there is an unexplained decrease in speed up for small matrix sizes and matrix counts over 60 which is theorised to be caused by the matrix arrays allocation and transfer between the heap, stack and cache, however this hypothesis still requires further testing to confirm.
+The Trigger Surround Cache (TSC) module was successfully implemented and tested.
+The system was robust and worked as expected in all of our test.
+The next step is to test against miss use. Then the  tests should be repeated with a better ADC module.
+Final Physical testing on an FPGA should be preformed to see if it works in real-world application.
+The TSC module could be improved buy simplifying the code and/or make it more efficient.
+More specifically the ring buffer size could be changed to be more efficient and a user manual could be written for the TSC module to help users.

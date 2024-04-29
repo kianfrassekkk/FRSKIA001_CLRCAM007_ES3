@@ -1,5 +1,5 @@
 \section{Testing and Validation}
-This section details the tests that were conducting on the TSC module while it is connected to the ADC and HUB module.
+This section details the tests that were conducted on the TSC module while it is connected to the ADC and HUB module.
 The tests conducted were only aimed to prove the functionality of the module and weren't aimed to test the module protection of misuse, even-though the TSC module was written to handle such cases.
 
 The test bench runs a simple test of sending a pulse on the reset line followed by a pulse on the start line to move the module into running mode.
@@ -18,8 +18,8 @@ The test was run as one continuous test and several snippets of gktwave were tak
 \end{figure}
 
 Firstly, a reset then start pulse are sent and the TSC module response by changing the state from STOP (0b000) to READY (0b001) and then to RUNNING (0b010).
-Once the module has entered running mode, it correctly requests data from the the ADC module every rising clock edge, and the adc replies by pulling the ready line high and outputs a new byte on the data bus.
-In a real world implementation of this there would be a slight delay between the request being pulled high and the ready begin pulled high.
+Once the module has entered running mode, it correctly requests data from the ADC module every rising clock edge, and the adc replies by pulling the ready line high and outputs a new byte on the data bus.
+In a real world implementation of this there would be a slight delay between the request being pulled high and the ready being pulled high.
 Next, the TSC module acknowledges the adc ready and resets the request line.
 Again, in a real world implementation there would be a slight delay between these edges.
 

@@ -25,8 +25,8 @@ There is also an accompanying TSC\_tb test bench which is used to initiate and t
 \subsection{CLock (clk)}
 A 250 MHz clock signal is set up on clk wire in the TS\_tb test bench.
 
-\subsubsection{State register}
-The state register is a 3-bit register that has the folowing states:
+\subsection{State register}
+The state register is a 3-bit register that has the following states:
 \begin{itemize}
       \item STOP (0b000) :
             State when the machine is powered on and has not been reset yet.
@@ -48,14 +48,14 @@ The state register is a 3-bit register that has the folowing states:
 \end{itemize}
 
 
-\subsubsection{Timer}
+\subsection{Timer}
 The timer is incremented on the rising edge of the clock. When
 a trigger even occurs the timer is save in the TRIGTM register which is outputted to the test bench.
 The timer is reset if a transition into a running state occurs.
 To calculate the time store in the TRIGTM register the timer is multiplied by the clock period (4 ps).
 
 
-\subsubsection{Ring Buffer}
+\subsection{Ring Buffer}
 The ring buffer is used to store the values read by the ADC.
 It is made up of 32 8-bit registers stored in an array called ring\_buffer.
 The tail pointer is named write\_prt and is Initial set to 5'b11111.
@@ -66,7 +66,7 @@ value is stored in the ring buffer at the write\_ptr index then read\_ptr is inc
 To read a value from the ring buffer the value at the read\_ptr index is read and the read\_ptr is incremented.
 this proses is repeated until the read\_prt = wright\_ptr. Indicates that all the values have been read.
 
-\subsubsection{How the TSC intervacec with the ADC}
+\subsection{How the TSC interfaces with the ADC}
 The ADC is initialized in the TSC module.
 This connect the adc\_request to REQ, adc\_request to RST,  adc\_ready to RDY, and adc\_data to DAT.
 The adc\_request line is connected to the main reset line this mean that the ADC module is reset when the TSC\_td
@@ -74,8 +74,8 @@ module is pull the reset line hight.
 once the ADC is reset the ADC will pull the adc\_ready line hight to indicate that the ADC is ready to send data over the 8 bit DAT line.
 The  bytes of of data being sent over the DAT line are extracted from a CSV file in the ADC module.
 When the TSC module detects the adc\_ready line is hight and the TSC is in the running state.
-The TSC will pull the adc\_request line hight on the posedge of the clk line for 1 ps to request data from the ADC on the adc\_data line.
-This can be seen in the two code section named \ref{posedgeadcready} and \ref{clockrunning} below.
+The TSC will pull the adc\_request line hight on the posed of the clk line for 1 ps to request data from the ADC on the adc\_data line.
+This can be seen in the two code section named listing \ref{posedgeadcready} and listing \ref{clockrunning} below.
 The subsequent data is then stored on the ring buffer.
 
 
@@ -108,7 +108,7 @@ The subsequent data is then stored on the ring buffer.
 
 
 
-\subsubsection{Triggering}
+\subsection{Triggering}
 
 The TSC module has a trigger value (TRIGVL) that is set in TSB module.
 However, TRIGVL can also be set in the TSC\_tb.
@@ -124,7 +124,8 @@ greater than the TRIGVL the following event will occurs:
 This Implementation is demonstrated in the code below.
 
 \begin{lstlisting}[language=Verilog, caption={Code for triggering event in the TSC module}, label={triggering}]
-      if (state != `TRIGERED) begin  //if it hasn't been triggered already, check for a valid trigger
+      //if it hasn't been triggered already, check for a valid trigger
+      if (state != `TRIGERED) begin 
         if (adc_data > TRIGVL) begin
           state = `TRIGERED;
           TRIGTM = timer; //capture time of trigger
@@ -144,7 +145,8 @@ indicate that it has recorded one more value. This this can be seen in the code 
 \begin{lstlisting}[language=Verilog, caption={Code for triggering event in the TSC module}, label={triggering}]
       `TRIGERED: begin
         timer++;
-        if(remaining_values--) begin //check that there are remaining values left to capture and decrement.
+       //check that there are remaining values left to capture and decrement.
+        if(remaining_values--)  begin 
           if (~ adc_request)
             adc_request = 1; //request new adc value (handled with posedge adc_ready)
         end else begin //all 16 values have been captured, wait for start or SBF command
@@ -154,9 +156,32 @@ indicate that it has recorded one more value. This this can be seen in the code 
       end
 \end{lstlisting}
 
-\subsubsection{Sending data to to HUB devices}
-If the TSC module is in the IDLE state and the SBF line is pulled hight the TSC module will transition to the SENDING state.
-durint this transition it will set SD hight and CD low
+\subsection{Sending data to to HUB devices}
+To sens da date the following state veriables where made:
+
+\subsection{Sending data to HUB devices}
+To send data, the TSC module uses the following bit definitions for the current serial\_bit
+when transmitting data via the SD line:
+
+\begin{itemize}
+      \item \texttt{WAIT\_BIT} (4'b1101): used to wait for at least 1 positive edge of the clock for the first start bit.
+      \item \texttt{START\_BIT} (4'b1110): Use to pull the SD line low when the first byte is being sent.
+      \item \texttt{END\_BIT} (4'b0111): Used to indicates a byte has been sent.
+      \item \texttt{FIRST\_BIT} (4'b1111): The 'first' bit of the byte.
+            The serial bit is always incremented BEFORE the bit is sent.
+\end{itemize}
+
+When the TSC module is in the IDLE state and the SBF line is pulled high,
+the TSC module will transition to the SENDING state. During this transition, it will set SD high, CD low and serial\_bit = WAIT\_BIT.
+If the TSC in sending state and the serial\_bit = WAIT\_BIT, on the positive clock edge the serial\_bit will be set to equal START\_BIT.
+Then on the next negative edge of the clock SD will be set low and serial\_bit will be set to equal FIRST\_BIT.
+The TSC will then send the 8 bit data on the SD line on each negative edge of the clock.
+After the 8 bits have been sent the serial\_bit will be set to equal END\_BIT.
+This will results in the SD line being pulled low and serial\_bit is set to \= FIRST\_BIT unless read\_ptr pus 1 equal write\_ptr in
+which case the TSC will transition to the READY state and the CD line will be pulled high.
+
+
+
 
 
 
