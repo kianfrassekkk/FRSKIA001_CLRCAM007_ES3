@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.6.20)  29 APR 2024 14:30
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.6.20)  29 APR 2024 15:11
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -457,7 +457,11 @@ File: l3backend-pdftex.def 2021-03-18 L3 backend support: PDF output (pdfTeX)
 \l__pdf_internal_box=\box55
 )
 (/Users/cameronclark/Documents/UCT/EEE4120F/FRSKIA001_CLRCAM007_ES3/prac5 repor
-t/Report.aux)
+t/Report.aux
+
+LaTeX Warning: Label `triggering' multiply defined.
+
+)
 \openout1 = `Report.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 18.
@@ -543,7 +547,7 @@ Underfull \hbox (badness 5652) in paragraph at lines 2--1
 []\OT1/ptm/m/n/10 A Field Pro-grammable Gate Ar-ray (FPGA) is an
  []
 
-<Figures/block_diagram_of_TSC.jpg, id=84, 554.07pt x 277.78781pt>
+<Figures/block_diagram_of_TSC.jpg, id=92, 554.07pt x 277.78781pt>
 File: Figures/block_diagram_of_TSC.jpg Graphic file (type jpg)
 <use Figures/block_diagram_of_TSC.jpg>
 Package pdftex.def Info: Figures/block_diagram_of_TSC.jpg  used on input line 1
@@ -554,92 +558,116 @@ Package pdftex.def Info: Figures/block_diagram_of_TSC.jpg  used on input line 1
 
  </Users/cameronclark/Documents/UCT/EEE4120F/FRSKIA001_CLRCAM007_ES3/prac5 repo
 rt/Figures/block_diagram_of_TSC.jpg>]
-LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 7
-6.
+LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 8
+2.
 
 (/usr/local/texlive/2021/texmf-dist/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 )
 LaTeX Font Info:    Font shape `OT1/pcr/m/it' in size <5> not available
-(Font)              Font shape `OT1/pcr/m/sl' tried instead on input line 79.
-)
-(./Body/Testing_and_Validation.tex
-<Figures/Areset_start_adc.png, id=94, 600.2425pt x 242.9075pt>
+(Font)              Font shape `OT1/pcr/m/sl' tried instead on input line 85.
+
+Underfull \hbox (badness 1668) in paragraph at lines 113--117
+ \OT1/ptm/m/it/10 5) Trig-ger-ing: [][][] \OT1/ptm/m/n/10 The TSC mod-ule has a
+ trig-ger value
+ []
+
+
+Overfull \hbox (27.66101pt too wide) in paragraph at lines 127--128
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
+][][][] 
+ []
+
+
+Overfull \hbox (5.50964pt too wide) in paragraph at lines 131--132
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (44.27454pt too wide) in paragraph at lines 147--148
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+) (./Body/Testing_and_Validation.tex
+<Figures/Areset_start_adc.png, id=104, 600.2425pt x 242.9075pt>
 File: Figures/Areset_start_adc.png Graphic file (type png)
 <use Figures/Areset_start_adc.png>
 Package pdftex.def Info: Figures/Areset_start_adc.png  used on input line 15.
 (pdftex.def)             Requested size: 252.0pt x 101.97968pt.
-<Figures/Badc_ring_buffer_write.png, id=96, 600.2425pt x 307.1475pt>
+ [2 </Users/cameronclark/Documents/UCT/EEE4120F/FRSKIA001_CLRCAM007_ES3/prac5 r
+eport/Figures/Areset_start_adc.png>]
+<Figures/Badc_ring_buffer_write.png, id=156, 600.2425pt x 307.1475pt>
 File: Figures/Badc_ring_buffer_write.png Graphic file (type png)
 <use Figures/Badc_ring_buffer_write.png>
 Package pdftex.def Info: Figures/Badc_ring_buffer_write.png  used on input line
  29.
 (pdftex.def)             Requested size: 252.0pt x 128.94951pt.
-<Figures/Cadc_ring_buffer_read.png, id=98, 600.2425pt x 219.82124pt>
+<Figures/Cadc_ring_buffer_read.png, id=158, 600.2425pt x 219.82124pt>
 File: Figures/Cadc_ring_buffer_read.png Graphic file (type png)
 <use Figures/Cadc_ring_buffer_read.png>
 Package pdftex.def Info: Figures/Cadc_ring_buffer_read.png  used on input line 
 41.
 (pdftex.def)             Requested size: 252.0pt x 92.28738pt.
-<Figures/Dtriggered.png, id=100, 600.2425pt x 219.82124pt>
+<Figures/Dtriggered.png, id=160, 600.2425pt x 219.82124pt>
 File: Figures/Dtriggered.png Graphic file (type png)
 <use Figures/Dtriggered.png>
 Package pdftex.def Info: Figures/Dtriggered.png  used on input line 51.
 (pdftex.def)             Requested size: 252.0pt x 92.28738pt.
-<Figures/Dtriggered2.png, id=101, 600.2425pt x 218.8175pt>
+<Figures/Dtriggered2.png, id=161, 600.2425pt x 218.8175pt>
 File: Figures/Dtriggered2.png Graphic file (type png)
 <use Figures/Dtriggered2.png>
 Package pdftex.def Info: Figures/Dtriggered2.png  used on input line 57.
 (pdftex.def)             Requested size: 252.0pt x 91.86598pt.
- [2 </Users/cameronclark/Documents/UCT/EEE4120F/FRSKIA001_CLRCAM007_ES3/prac5 r
-eport/Figures/Areset_start_adc.png> </Users/cameronclark/Documents/UCT/EEE4120F
-/FRSKIA001_CLRCAM007_ES3/prac5 report/Figures/Badc_ring_buffer_write.png> </Use
-rs/cameronclark/Documents/UCT/EEE4120F/FRSKIA001_CLRCAM007_ES3/prac5 report/Fig
-ures/Cadc_ring_buffer_read.png>]
-<Figures/E16captured.png, id=138, 600.2425pt x 219.82124pt>
+
+Underfull \vbox (badness 6708) has occurred while \output is active []
+
+<Figures/E16captured.png, id=164, 600.2425pt x 219.82124pt>
 File: Figures/E16captured.png Graphic file (type png)
 <use Figures/E16captured.png>
 Package pdftex.def Info: Figures/E16captured.png  used on input line 72.
 (pdftex.def)             Requested size: 252.0pt x 92.28738pt.
-<Figures/Fidle_start.png, id=139, 600.2425pt x 260.975pt>
+<Figures/Fidle_start.png, id=165, 600.2425pt x 260.975pt>
 File: Figures/Fidle_start.png Graphic file (type png)
 <use Figures/Fidle_start.png>
 Package pdftex.def Info: Figures/Fidle_start.png  used on input line 82.
 (pdftex.def)             Requested size: 252.0pt x 109.56494pt.
-<Figures/Gidle_SBF.png, id=140, 600.2425pt x 260.975pt>
+<Figures/Gidle_SBF.png, id=166, 600.2425pt x 260.975pt>
 File: Figures/Gidle_SBF.png Graphic file (type png)
 <use Figures/Gidle_SBF.png>
 Package pdftex.def Info: Figures/Gidle_SBF.png  used on input line 88.
 (pdftex.def)             Requested size: 252.0pt x 109.56494pt.
-<Figures/Htransmit_start.png, id=144, 600.2425pt x 260.975pt>
+ [3 </Users/cameronclark/Documents/UCT/EEE4120F/FRSKIA001_CLRCAM007_ES3/prac5 r
+eport/Figures/Badc_ring_buffer_write.png> </Users/cameronclark/Documents/UCT/EE
+E4120F/FRSKIA001_CLRCAM007_ES3/prac5 report/Figures/Cadc_ring_buffer_read.png> 
+</Users/cameronclark/Documents/UCT/EEE4120F/FRSKIA001_CLRCAM007_ES3/prac5 repor
+t/Figures/Dtriggered.png> </Users/cameronclark/Documents/UCT/EEE4120F/FRSKIA001
+_CLRCAM007_ES3/prac5 report/Figures/Dtriggered2.png> </Users/cameronclark/Docum
+ents/UCT/EEE4120F/FRSKIA001_CLRCAM007_ES3/prac5 report/Figures/E16captured.png>
+]
+<Figures/Htransmit_start.png, id=187, 600.2425pt x 260.975pt>
 File: Figures/Htransmit_start.png Graphic file (type png)
 <use Figures/Htransmit_start.png>
 Package pdftex.def Info: Figures/Htransmit_start.png  used on input line 100.
 (pdftex.def)             Requested size: 252.0pt x 109.56494pt.
-<Figures/Ibyte_transmit.png, id=145, 600.2425pt x 260.975pt>
+<Figures/Ibyte_transmit.png, id=189, 600.2425pt x 260.975pt>
 File: Figures/Ibyte_transmit.png Graphic file (type png)
 <use Figures/Ibyte_transmit.png>
-Package pdftex.def Info: Figures/Ibyte_transmit.png  used on input line 108.
+Package pdftex.def Info: Figures/Ibyte_transmit.png  used on input line 112.
 (pdftex.def)             Requested size: 252.0pt x 109.56494pt.
-
-Underfull \vbox (badness 4673) has occurred while \output is active []
-
- [3 </Users/cameronclark/Documents/UCT/EEE4120F/FRSKIA001_CLRCAM007_ES3/prac5 r
-eport/Figures/Dtriggered.png> </Users/cameronclark/Documents/UCT/EEE4120F/FRSKI
-A001_CLRCAM007_ES3/prac5 report/Figures/Dtriggered2.png> </Users/cameronclark/D
-ocuments/UCT/EEE4120F/FRSKIA001_CLRCAM007_ES3/prac5 report/Figures/E16captured.
-png> </Users/cameronclark/Documents/UCT/EEE4120F/FRSKIA001_CLRCAM007_ES3/prac5 
-report/Figures/Fidle_start.png> </Users/cameronclark/Documents/UCT/EEE4120F/FRS
-KIA001_CLRCAM007_ES3/prac5 report/Figures/Gidle_SBF.png> </Users/cameronclark/D
-ocuments/UCT/EEE4120F/FRSKIA001_CLRCAM007_ES3/prac5 report/Figures/Htransmit_st
-art.png>]
-<Figures/Jtransmit_end.png, id=166, 600.2425pt x 260.975pt>
+<Figures/Jtransmit_end.png, id=191, 600.2425pt x 260.975pt>
 File: Figures/Jtransmit_end.png Graphic file (type png)
 <use Figures/Jtransmit_end.png>
-Package pdftex.def Info: Figures/Jtransmit_end.png  used on input line 116.
+Package pdftex.def Info: Figures/Jtransmit_end.png  used on input line 126.
 (pdftex.def)             Requested size: 252.0pt x 109.56494pt.
 )
-(./Body/Conclusion.tex)
+(./Body/Conclusion.tex [4 </Users/cameronclark/Documents/UCT/EEE4120F/FRSKIA001
+_CLRCAM007_ES3/prac5 report/Figures/Fidle_start.png> </Users/cameronclark/Docum
+ents/UCT/EEE4120F/FRSKIA001_CLRCAM007_ES3/prac5 report/Figures/Gidle_SBF.png> <
+/Users/cameronclark/Documents/UCT/EEE4120F/FRSKIA001_CLRCAM007_ES3/prac5 report
+/Figures/Htransmit_start.png> </Users/cameronclark/Documents/UCT/EEE4120F/FRSKI
+A001_CLRCAM007_ES3/prac5 report/Figures/Ibyte_transmit.png> </Users/cameronclar
+k/Documents/UCT/EEE4120F/FRSKIA001_CLRCAM007_ES3/prac5 report/Figures/Jtransmit
+_end.png>])
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -651,24 +679,25 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[4
+[5
 
- </Users/cameronclark/Documents/UCT/EEE4120F/FRSKIA001_CLRCAM007_ES3/prac5 repo
-rt/Figures/Ibyte_transmit.png> </Users/cameronclark/Documents/UCT/EEE4120F/FRSK
-IA001_CLRCAM007_ES3/prac5 report/Figures/Jtransmit_end.png>]
+]
 (/Users/cameronclark/Documents/UCT/EEE4120F/FRSKIA001_CLRCAM007_ES3/prac5 repor
 t/Report.aux)
+
+LaTeX Warning: There were multiply-defined labels.
+
 Package rerunfilecheck Info: File `Report.out' has not changed.
-(rerunfilecheck)             Checksum: 9BB3F28F18494CF3500A92944B8C8578;3691.
+(rerunfilecheck)             Checksum: C691E311C8ADB183B1B8D8BFE45E2557;4108.
  ) 
 Here is how much of TeX's memory you used:
- 12809 strings out of 478994
- 198232 string characters out of 5858184
- 611199 words of memory out of 5000000
- 30038 multiletter control sequences out of 15000+600000
+ 12846 strings out of 478994
+ 198733 string characters out of 5858184
+ 644199 words of memory out of 5000000
+ 30053 multiletter control sequences out of 15000+600000
  434087 words of font info for 83 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 80i,9n,80p,344b,1452s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 80i,9n,80p,344b,1460s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2021/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
 exlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/tex
 live/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texli
@@ -680,10 +709,10 @@ nts/type1/urw/courier/ucrro8a.pfb></usr/local/texlive/2021/texmf-dist/fonts/typ
 e1/urw/times/utmr8a.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/urw/tim
 es/utmri8a.pfb>
 Output written on "/Users/cameronclark/Documents/UCT/EEE4120F/FRSKIA001_CLRCAM0
-07_ES3/prac5 report/Report.pdf" (4 pages, 407363 bytes).
+07_ES3/prac5 report/Report.pdf" (5 pages, 416596 bytes).
 PDF statistics:
- 220 PDF objects out of 1000 (max. 8388607)
- 180 compressed objects within 2 object streams
- 58 named destinations out of 1000 (max. 500000)
- 221 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 263 PDF objects out of 1000 (max. 8388607)
+ 221 compressed objects within 3 object streams
+ 80 named destinations out of 1000 (max. 500000)
+ 237 words of extra memory for PDF output out of 10000 (max. 10000000)
 

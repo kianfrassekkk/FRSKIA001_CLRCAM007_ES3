@@ -90,7 +90,7 @@ Once there are no remaining values (the remaining value register has reached 0),
     \label{fig:testG}
 \end{figure}
 
-From the IDLE state, the TSC module can either transition back to RUNNING or SENDING depending on the next command sent.
+From the IDLE state, the TSC module can either transition back to RUNNING state or into SENDING state depending on the next command sent.
 In \fref{fig:testF}, the TSC module receives a start pulse, correctly transitions back to RUNNING (0b010) state, and correctly continues writing the ADC values into the ring buffer.
 In \fref{fig:testG}, the TSC module receives a SBF pulse, correctly transition into SENDING (0b101) state, and starts transmitting data with is shown in \ssref{subsec:starting-data-transmission}.
 
@@ -102,13 +102,23 @@ In \fref{fig:testG}, the TSC module receives a SBF pulse, correctly transition i
     \label{fig:testH}
 \end{figure}
 
-\subsection{Byte Transmitting}
+As the module transitions into SENDING (0b101) state, it immediately pulls CD low and SD high as required; it also sets the serial bit to WAIT (0xD).
+When the serial bit is WAIT, it is waiting for the next rising clock edge before it transitions into the TRANSMISSION\_START\_BIT (0xE) which occurs at 902 ps.
+Once CD has been low and SD has been high for at least one rising clock edge, the first byte can be sent, which is explained in \ssref{subsec:byte-transmitting}.
+
+\subsection{Byte Transmitting}\label{subsec:byte-transmitting}
 \begin{figure}[H]
     \centering
     \includegraphics[width=\columnwidth]{Figures/Ibyte_transmit}
     \caption{Byte Transmitting gktwave Output}
     \label{fig:testI}
 \end{figure}
+
+The HUB module reads data on the rising clock edge, therefore the TSC module must write data on the falling clock edge, which is shown in \fref{fig:testI} by the SD line only changing with the falling edge clock.
+Additionally, each byte is preceded by a low START\_BIT (0xF).
+
+Little Endian encoding was chosen for sending the data on the SD line, so reading the data on the rising edge of the clock as the HUB module would give 0-1101-0000.
+This is equivalent to the value 0b0000-1011 = 0x0B which shows that the TSC module correctly sent the byte in the 19th address of the ring buffer.
 
 \subsection{Ending Data Transmission}
 \begin{figure}[H]
@@ -117,3 +127,6 @@ In \fref{fig:testG}, the TSC module receives a SBF pulse, correctly transition i
     \caption{Ending Data Transmission gktwave Output}
     \label{fig:testJ}
 \end{figure}
+
+\fref{fig:testH} shows that the first byte transmitted was at address 18, and \fref{fig:testJ} shows that the byte at address 17 has just been transmitted which means the full 32 byte ring buffer has been transmitted.
+The TSC module correctly recognises this by dropping the SD line low, pulling the CD line high, resetting the read pointer back to just in front of the write pointer, and finally setting the state back to READY (0b001), waiting to receive a start command once again.
