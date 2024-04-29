@@ -10,9 +10,9 @@
 
 //bit definitions for the current serial bit when transmitting data via SD line
 `define WAIT_BIT 4'b1101 //wait for at least 1 posedge clk for first start bit
-`define START_BIT 4'b1110 //start bit
-`define END_BIT 4'b0111 //data bytes is only has bits 0-7, so reaching bit 8 means the byte has finished.
-`define FIRST_BIT 4'b1111 //the 'first' bit of the byte. the serial bit is always incremented BEFORE the bit is sent
+`define TRANSMISSION_START_BIT 4'b1110 
+`define END_BIT 4'b0111 //data bytes is only has bits 0-7, so reaching bit 7 means the byte has finished.
+`define START_BIT 4'b1111 //start bit of the byte transmission
 
 module TSC (
     //control lines for this module
@@ -141,7 +141,8 @@ module TSC (
 
       `SENDING: begin //wait 1 posedge clk for first start bit
         if (serial_bit == `WAIT_BIT) begin
-          serial_bit = `START_BIT;
+          serial_bit = `TRANSMISSION_S
+        TART_BIT;
         end
       end
 
@@ -157,15 +158,19 @@ module TSC (
 
         `WAIT_BIT:; //wait bit is handled by POSEDGE CLK
 
-        `START_BIT: begin
+        `TRANSMISSION_S
+    TART_BIT: begin
+            serial_bit = `START_BIT  //start the transmission
             SD = 1'b0; //pull start bit low;
-            serial_bit = `FIRST_BIT; //start the transmission
+        ; 
         end
 
         `END_BIT: begin
-            //usually the stop bit would go here, but instead it transitions straight to the next stop bit
+            //usually the stop bit would go here, but instead it transitions straight to the next start bit
+            serial_bit = `START_BIT
             SD = 1'b0;
-            serial_bit = `FIRST_BIT; //serial = `START_BIT would implement the stop bit -> start bit -> next byte
+        ; //serial = `TRANSMISSION_S
+    TART_BIT would implement the stop bit -> start bit -> next byte
 
             if (read_ptr++ == write_ptr) begin //read next byte. if bytes are finished, go to ready state and put CD high
                 state = `READY;
