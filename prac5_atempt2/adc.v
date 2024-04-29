@@ -26,7 +26,7 @@ module ADC (
     // Loop through each element of the array
     for (i = 0; i < `VALUE_COUNT; i++) begin
       // Read a line from the file
-      j = $fscanf(fd, "%d", adc_data[i]);
+      j = $fscanf(fd, "%h", adc_data[i]);
     end
 
     // Close the file
