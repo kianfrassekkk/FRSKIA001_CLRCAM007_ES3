@@ -1,7 +1,7 @@
 \section{Design and Implementation }
 
 \subsection{Hardware ans Software}
-This was run on a MacBook Pro computer using Iverilog. Additionally, gtkwave was used to monitor the wires.
+This was run on a MacBook Pro computer using Iverilog. Additionally, gtkwave was used to monitor the modules input and outputs.
 
 \subsection{TSC design overview}
 
@@ -28,22 +28,23 @@ A 250 MHz clock signal is set up on clk wire in the TS\_tb test bench.
 \subsubsection{State register}
 The state register is a 3-bit register that has the folowing states:
 \begin{itemize}
-      \item 000 Stop :
+      \item STOP (0b000) :
             State when the machine is powered on and has not been reset yet.
-      \item 001 ready :
+      \item READY (0b001) :
             State that is enter on the reset pin rising edge and it waits for the start pin rising edge.
-      \item 010 Running :
+      \item RUNNING (0b010):
             State that is entered from ready or Idle state once the start pin rising edge is pulled hight.
             It incrementing the timer and wright adc values to the ring buffer.
-      \item 011 Triggered :
+      \item TRIGGERED (0b011):
             State entered when the value read from the ADC is
             greater than the predetermined trigger value (TRIGVL).
             It capturing the next 16 values.
-      \item 100 IDLE ;
+      \item IDLE (0b100);
             This state is entered when a trigger event has occurred
             and the TSC is waiting for the start pin or SPF pins rising edge.
-      \item 101 SENDING :
-            This state is entered from the IDLE state when the SFB gose high. It indicates that data is being sent on the SD line.
+      \item SENDING (0b101):
+            This state is entered from the IDLE state when the SFB line it pulled high.
+            It indicates that data is being sent on the SD line.
 \end{itemize}
 
 
@@ -52,7 +53,6 @@ The timer is incremented on the rising edge of the clock. When
 a trigger even occurs the timer is save in the TRIGTM register which is outputted to the test bench.
 The timer is reset if a transition into a running state occurs.
 To calculate the time store in the TRIGTM register the timer is multiplied by the clock period (4 ps).
-
 
 
 \subsubsection{Ring Buffer}
@@ -67,13 +67,19 @@ To read a value from the ring buffer the value at the read\_ptr index is read an
 this proses is repeated until the read\_prt = wright\_ptr. Indicates that all the values have been read.
 
 \subsubsection{How the TSC intervacec with the ADC}
-The ADC is initialized in the TSC module. this is creates the adc\_request, adc\_request,  adc\_ready, and DAT wires.
-The adc\_request line is to the main reset line this mean that the ADC is reset when the TSC\_td module pulls the reset pin hight.
-once the ADC is reset the adc\_ready line is pulled hight to indicate that the ADC is ready to send data.
+The ADC is initialized in the TSC module.
+This connect the adc\_request to REQ, adc\_request to RST,  adc\_ready to RDY, and adc\_data to DAT.
+The adc\_request line is connected to the main reset line this mean that the ADC module is reset when the TSC\_td
+module is pull the reset line hight.
+once the ADC is reset the ADC will pull the adc\_ready line hight to indicate that the ADC is ready to send data over the 8 bit DAT line.
+The  bytes of of data being sent over the DAT line are extracted from a CSV file in the ADC module.
 When the TSC module detects the adc\_ready line is hight and the TSC is in the running state.
-The TSC will pull the adc\_request line hight on  the posedge of the clk line for 1 ps to request data from the ADC. This can be seen in the two code section below.
+The TSC will pull the adc\_request line hight on the posedge of the clk line for 1 ps to request data from the ADC on the adc\_data line.
+This can be seen in the two code section named \ref{posedgeadcready} and \ref{clockrunning} below.
+The subsequent data is then stored on the ring buffer.
 
-\begin{lstlisting}[language=Verilog, caption={Code for storing data and moving pointers i the posedge adc\_ready}]
+
+\begin{lstlisting}[language=Verilog, caption={Code for storing data and moving pointers in the posedge adc\_ready}, label={posedgeadcready}]
       always @(posedge adc_ready) begin
             if (adc_request) begin
             #1 //delay so the pulse doesn't disappear on the echo. TO BE REMOVED
@@ -90,13 +96,69 @@ The TSC will pull the adc\_request line hight on  the posedge of the clk line fo
   end
 \end{lstlisting}
 
-\begin{lstlisting}[language=Verilog, caption={Code for requesting data from the ADC on posedge of the clock when in RUNNING state}]
+
+\begin{lstlisting}[language=Verilog, caption={Code for requesting data from the ADC on posedge of the clock when in RUNNING state}, label={clockrunning}]
       `RUNNING: begin
         timer++;
         if (~ adc_request)
           adc_request = 1; //request new adc value (handled with posedge adc_ready)
       end
 \end{lstlisting}
+
+
+
+
+\subsubsection{Triggering}
+
+The TSC module has a trigger value (TRIGVL) that is set in TSB module.
+However, TRIGVL can also be set in the TSC\_tb.
+When the TSC is in the RUNNING state and the ADC is outputing to adc\_data if the value adc\_data is
+greater than the TRIGVL the following event will occurs:
+
+\begin{itemize}
+      \item The TSC module transitions to the TRIGGERED state.
+      \item The TRIGTM register is set to the current value of the timer.
+      \item  The reg remaining\_values is set to equal 5'h10 (16 in decimal). This is done to help record 16 more values.
+\end{itemize}
+
+This Implementation is demonstrated in the code below.
+
+\begin{lstlisting}[language=Verilog, caption={Code for triggering event in the TSC module}, label={triggering}]
+      if (state != `TRIGERED) begin  //if it hasn't been triggered already, check for a valid trigger
+        if (adc_data > TRIGVL) begin
+          state = `TRIGERED;
+          TRIGTM = timer; //capture time of trigger
+          remaining_values = 5'h10; //set remaining adc values to 16 (handled by posedge clk)
+        end
+      end
+\end{lstlisting}
+
+
+When the TSC module is in the TRIGGERED state the TSC dose the following on the positive edge fo the clock.
+It incremented the timer value because as per project brief the timer must only stop being incremented once the IDLE stat has been entered.
+Then the TSC will check if remaining\_values =0 to see if 16 byte have been recorded.
+If all 16 bytes have been recoded it will transition to the IDLE state.
+else it will pull the adc\_request line hight to request more data from the ADC and decrease the remaining\_values by 1 to
+indicate that it has recorded one more value. This this can be seen in the code below.
+
+\begin{lstlisting}[language=Verilog, caption={Code for triggering event in the TSC module}, label={triggering}]
+      `TRIGERED: begin
+        timer++;
+        if(remaining_values--) begin //check that there are remaining values left to capture and decrement.
+          if (~ adc_request)
+            adc_request = 1; //request new adc value (handled with posedge adc_ready)
+        end else begin //all 16 values have been captured, wait for start or SBF command
+          state = `IDLE; 
+          TRD = 1'b1;
+        end
+      end
+\end{lstlisting}
+
+\subsubsection{Sending data to to HUB devices}
+If the TSC module is in the IDLE state and the SBF line is pulled hight the TSC module will transition to the SENDING state.
+durint this transition it will set SD hight and CD low
+
+
 
 
 
