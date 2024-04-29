@@ -9,9 +9,10 @@
 `define SENDING 3'b101 //the machine has received and SBF command and is sending data on the SD line.
 
 //bit definitions for the current serial bit when transmitting data via SD line
-`define WAIT_BIT 4'b1110 //wait for at least 1 posedge clk for first start bit
-`define START_BIT 4'b1111 //start bit
-`define END_BIT 4'b1000 //data bytes is only has bits 0-7, so reaching bit 8 means the byte has finished.
+`define WAIT_BIT 4'b1101 //wait for at least 1 posedge clk for first start bit
+`define START_BIT 4'b1110 //start bit
+`define END_BIT 4'b0111 //data bytes is only has bits 0-7, so reaching bit 8 means the byte has finished.
+`define FIRST_BIT 4'b1111 //the 'first' bit of the byte. the serial bit is always incremented BEFORE the bit is sent
 
 module TSC (
     //control lines for this module
@@ -38,13 +39,13 @@ module TSC (
     
     //trigger watchers
     output reg [4:0] remaining_values_out,
-    output reg adc_triggered_out,
     output reg [31:0] TRIGTM_out,
 
     //hub module watchers
     output reg TRD_out,
     output reg SD_out,
-    output reg CD_out
+    output reg CD_out,
+    output reg [3:0] serial_bit_out
     );
 
 // ADC MODULE
@@ -95,6 +96,8 @@ module TSC (
     assign read_ptr_out = read_ptr;
     assign write_ptr_out = write_ptr;
     assign remaining_values_out = remaining_values;
+    assign TRIGTM_out = TRIGTM;
+    assign serial_bit_out = serial_bit;
   end
 
 // POSEDGE RESET
@@ -112,8 +115,6 @@ module TSC (
       timer = 32'h0000;
       TRD = 1'b0;
       state = `RUNNING;
-
-      adc_triggered_out = 1'b0;
     end
   end
 
@@ -158,13 +159,13 @@ module TSC (
 
         `START_BIT: begin
             SD = 1'b0; //pull start bit low;
-            serial_bit = 0; //start the transmission
+            serial_bit = `FIRST_BIT; //start the transmission
         end
 
         `END_BIT: begin
             //usually the stop bit would go here, but instead it transitions straight to the next stop bit
             SD = 1'b0;
-            serial_bit = 0; //serial = `START_BIT would implement the stop bit -> start bit -> next byte
+            serial_bit = `FIRST_BIT; //serial = `START_BIT would implement the stop bit -> start bit -> next byte
 
             if (read_ptr++ == write_ptr) begin //read next byte. if bytes are finished, go to ready state and put CD high
                 state = `READY;
@@ -173,7 +174,7 @@ module TSC (
         end
 
         default: begin //handle the byte transmission;
-          SD = ring_buffer[read_ptr][serial_bit++]; //send the [serial bit] bit of the current byte
+          SD = ring_buffer[read_ptr][++serial_bit]; //send the [serial bit] bit of the current byte
         end
 
       endcase
@@ -194,8 +195,6 @@ module TSC (
           state = `TRIGERED;
           TRIGTM = timer; //capture time of trigger
           remaining_values = 5'h10; //set remaining adc values to 16 (handled by posedge clk)
-
-          adc_triggered_out = 1'b0; //watcher output
         end
       end
 
@@ -204,6 +203,9 @@ module TSC (
       read_ptr++;
 
       adc_request = 0; //pull request down
+
+      ring_buffer_read_ptr <= ring_buffer[read_ptr]; //update watching register
+      ring_buffer_write_ptr <= ring_buffer[write_ptr]; //update watching register
     end
   end
 
@@ -213,6 +215,7 @@ module TSC (
       state = `SENDING;
       SD = 1'b1;
       CD = 1'b0;
+      TRD = 1'b0;
       serial_bit = `WAIT_BIT; //wait for posedge clk to start the start bit
     end
   end

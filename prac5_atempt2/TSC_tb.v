@@ -26,13 +26,15 @@ module TSC_tb;
 
   // trigger watchers
   output wire [4:0] remaining_values_out;
-  output wire adc_triggered_out;
   output wire [31:0] TRIGTM_out;
 
   // hub module watchers
   output wire TRD_out;
   output wire SD_out;
   output wire CD_out;
+  output wire [3:0] serial_bit_out;
+
+  integer triggered_once = 1'b0;
 
   // Instantiate the Unit Under Test (UUT)
   TSC uut(
@@ -58,13 +60,13 @@ module TSC_tb;
 
     // trigger watchers
     remaining_values_out,
-    adc_triggered_out,
     TRIGTM_out,
 
     // hub module watchers
     TRD_out,
     SD_out,
-    CD_out
+    CD_out,
+    serial_bit_out
     );
 
   initial begin
@@ -87,7 +89,7 @@ module TSC_tb;
     #4
     start = 0;
 
-    #2000; 
+    #3000; 
 
     $display("test complete");
 
@@ -100,9 +102,17 @@ module TSC_tb;
   end
 
   always @(posedge TRD_out) begin
-    #20 
-    SBF = 1;
-    #2
-    SBF = 0;
+    if (triggered_once) begin
+      #10
+      SBF = 1;
+      #2
+      SBF = 0;
+    end else begin
+        triggered_once = 1'b1;
+        #10
+        start = 1;
+        #2
+        start = 0;
+    end
   end
 endmodule
