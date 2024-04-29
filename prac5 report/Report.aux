@@ -1,5 +1,19 @@
 \relax 
 \providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyperFirstAtBeginDocument{\AtBeginDocument}
+\HyperFirstAtBeginDocument{\ifx\hyper@anchor\@undefined
+\global\let\oldcontentsline\contentsline
+\gdef\contentsline#1#2#3#4{\oldcontentsline{#1}{#2}{#3}}
+\global\let\oldnewlabel\newlabel
+\gdef\newlabel#1#2{\newlabelxx{#1}#2}
+\gdef\newlabelxx#1#2#3#4#5#6{\oldnewlabel{#1}{{#2}{#3}}}
+\AtEndDocument{\ifx\hyper@anchor\@undefined
+\let\contentsline\oldcontentsline
+\let\newlabel\oldnewlabel
+\fi}
+\fi}
+\global\let\hyper@last\relax 
+\gdef\HyperFirstAtBeginDocument#1{#1}
 \providecommand\HyField@AuxAddToFields[1]{}
 \providecommand\HyField@AuxAddToCoFields[2]{}
 \bibstyle{IEEEtran}
@@ -7,16 +21,49 @@
 \@writefile{toc}{\contentsline {section}{\numberline {II}Design and Implementation }{1}{section.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-A}}Hardware ans Software}{1}{subsection.2.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-B}}TSC design overview}{1}{subsection.2.2}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Block diagram of the TSC}}{1}{figure.caption.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Block diagram of the TSC\relax }}{1}{figure.caption.1}\protected@file@percent }
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{fig:block diagram of TSC}{{1}{1}{Block diagram of the TSC}{figure.caption.1}{}}
+\newlabel{fig:block diagram of TSC}{{1}{1}{Block diagram of the TSC\relax }{figure.caption.1}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-C}}CLock (clk)}{1}{subsection.2.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {II-C}1}State register}{1}{subsubsection.2.3.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {II-C}2}Timer}{1}{subsubsection.2.3.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {II-C}3}Ring Buffer}{1}{subsubsection.2.3.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {II-C}4}How the TSC intervacec with the ADC}{1}{subsubsection.2.3.4}\protected@file@percent }
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {1}{\ignorespaces Code for storing data and moving pointers i the posedge adc\_ready}}{2}{lstlisting.1}\protected@file@percent }
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {2}{\ignorespaces Code for requesting data from the ADC on posedge of the clock when in RUNNING state}}{2}{lstlisting.2}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {1}Code for storing data and moving pointers i the posedge adc\_ready}{2}{lstlisting.1}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {2}Code for requesting data from the ADC on posedge of the clock when in RUNNING state}{2}{lstlisting.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {III}Testing and Validation}{2}{section.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {IV}Conclusion}{2}{section.4}\protected@file@percent }
-\gdef \@abspage@last{2}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-A}}Reseting and Starting}{2}{subsection.3.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Resetting and Starting gktwave Output\relax }}{2}{figure.caption.2}\protected@file@percent }
+\newlabel{fig:testA}{{2}{2}{Resetting and Starting gktwave Output\relax }{figure.caption.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-B}}Ring Buffer Writing}{2}{subsection.3.2}\protected@file@percent }
+\newlabel{subsec:ring-buffer-writing}{{\mbox  {III-B}}{2}{Ring Buffer Writing}{subsection.3.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Ring Buffer Writing gktwave Output\relax }}{2}{figure.caption.3}\protected@file@percent }
+\newlabel{fig:testB}{{3}{2}{Ring Buffer Writing gktwave Output\relax }{figure.caption.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-C}}Ring Buffer Reading}{2}{subsection.3.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Ring Buffer Reading gktwave Output\relax }}{2}{figure.caption.4}\protected@file@percent }
+\newlabel{fig:testC}{{4}{2}{Ring Buffer Reading gktwave Output\relax }{figure.caption.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-D}}Triggering}{3}{subsection.3.4}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Triggering gktwave Output\relax }}{3}{figure.caption.5}\protected@file@percent }
+\newlabel{fig:testD}{{5}{3}{Triggering gktwave Output\relax }{figure.caption.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Re-triggering gktwave Output\relax }}{3}{figure.caption.6}\protected@file@percent }
+\newlabel{fig:testD2}{{6}{3}{Re-triggering gktwave Output\relax }{figure.caption.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-E}}Raising TRD Line}{3}{subsection.3.5}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Raising TRD Line gktwave Output\relax }}{3}{figure.caption.7}\protected@file@percent }
+\newlabel{fig:testE}{{7}{3}{Raising TRD Line gktwave Output\relax }{figure.caption.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-F}}Starting or Transmitting From Idle}{3}{subsection.3.6}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Starting From Idle gktwave Output\relax }}{3}{figure.caption.8}\protected@file@percent }
+\newlabel{fig:testF}{{8}{3}{Starting From Idle gktwave Output\relax }{figure.caption.8}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Transmitting Data From Idle gktwave Output\relax }}{3}{figure.caption.9}\protected@file@percent }
+\newlabel{fig:testG}{{9}{3}{Transmitting Data From Idle gktwave Output\relax }{figure.caption.9}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-G}}Starting Data Transmission}{3}{subsection.3.7}\protected@file@percent }
+\newlabel{subsec:starting-data-transmission}{{\mbox  {III-G}}{3}{Starting Data Transmission}{subsection.3.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Starting Data Transmission gktwave Output\relax }}{3}{figure.caption.10}\protected@file@percent }
+\newlabel{fig:testH}{{10}{3}{Starting Data Transmission gktwave Output\relax }{figure.caption.10}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-H}}Byte Transmitting}{4}{subsection.3.8}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces Byte Transmitting gktwave Output\relax }}{4}{figure.caption.11}\protected@file@percent }
+\newlabel{fig:testI}{{11}{4}{Byte Transmitting gktwave Output\relax }{figure.caption.11}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-I}}Ending Data Transmission}{4}{subsection.3.9}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces Ending Data Transmission gktwave Output\relax }}{4}{figure.caption.12}\protected@file@percent }
+\newlabel{fig:testJ}{{12}{4}{Ending Data Transmission gktwave Output\relax }{figure.caption.12}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {IV}Conclusion}{4}{section.4}\protected@file@percent }
+\gdef \@abspage@last{4}

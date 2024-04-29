@@ -108,11 +108,11 @@ module TSC_tb;
       #2
       SBF = 0;
     end else begin
-        triggered_once = 1'b1;
-        #10
-        start = 1;
-        #2
-        start = 0;
+      triggered_once = 1'b1;
+      #10
+      start = 1;
+      #2
+      start = 0;
     end
   end
 endmodule
