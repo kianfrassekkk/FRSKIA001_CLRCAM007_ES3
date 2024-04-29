@@ -11,7 +11,7 @@
 //bit definitions for the current serial bit when transmitting data via SD line
 `define WAIT_BIT 4'b1101 //wait for at least 1 posedge clk for first start bit
 `define TRANSMISSION_START_BIT 4'b1110 
-`define END_BIT 4'b0111 //data bytes is only has bits 0-7, so reaching bit 7 means the byte has finished.
+`define END_BIT 4'b0111 //data byte only has bits 0-7, so reaching bit 7 means the byte has finished.
 `define START_BIT 4'b1111 //start bit of the byte transmission
 
 module TSC (
@@ -49,21 +49,21 @@ module TSC (
     );
 
 // ADC MODULE
-  reg adc_request = 0;
-  wire adc_ready;
-  wire [7:0] adc_data;
+  reg REQ = 0;
+  wire RDY;
+  wire [7:0] DAT;
 
   initial begin //assign watching registers for test bench
-    assign adc_request_out = adc_request;
-    assign adc_ready_out = adc_ready;
-    assign adc_data_out = adc_data;
+    assign adc_request_out = REQ;
+    assign adc_ready_out = RDY;
+    assign adc_data_out = DAT;
   end
   
   ADC i_adc (
-    .req(adc_request),
+    .req(REQ),
     .rst(reset),
-    .rdy(adc_ready),
-    .dat(adc_data)
+    .rdy(RDY),
+    .dat(DAT)
   );
 
 // HUB MODULE (not implemented)
@@ -124,15 +124,15 @@ module TSC (
 
       `RUNNING: begin
         timer++;
-        if (~ adc_request)
-          adc_request = 1; //request new adc value (handled with posedge adc_ready)
+        if (~ REQ)
+          REQ = 1; //request new adc value (handled with posedge RDY)
       end
 
       `TRIGERED: begin
         timer++;
         if(remaining_values--) begin //check that there are remaining values left to capture and decrement.
-          if (~ adc_request)
-            adc_request = 1; //request new adc value (handled with posedge adc_ready)
+          if (~ REQ)
+            REQ = 1; //request new adc value (handled with posedge RDY)
         end else begin //all 16 values have been captured, wait for start or SBF command
           state = `IDLE; 
           TRD = 1'b1;
@@ -141,8 +141,7 @@ module TSC (
 
       `SENDING: begin //wait 1 posedge clk for first start bit
         if (serial_bit == `WAIT_BIT) begin
-          serial_bit = `TRANSMISSION_S
-        TART_BIT;
+          serial_bit = `TRANSMISSION_START_BIT;
         end
       end
 
@@ -158,8 +157,7 @@ module TSC (
 
         `WAIT_BIT:; //wait bit is handled by POSEDGE CLK
 
-        `TRANSMISSION_S
-    TART_BIT: begin
+        `TRANSMISSION_START_BIT: begin
             serial_bit = `START_BIT  //start the transmission
             SD = 1'b0; //pull start bit low;
         ; 
@@ -169,8 +167,7 @@ module TSC (
             //usually the stop bit would go here, but instead it transitions straight to the next start bit
             serial_bit = `START_BIT
             SD = 1'b0;
-        ; //serial = `TRANSMISSION_S
-    TART_BIT would implement the stop bit -> start bit -> next byte
+        ; //serial = `TRANSMISSION_START_BIT would implement the stop bit -> start bit -> next byte
 
             if (read_ptr++ == write_ptr) begin //read next byte. if bytes are finished, go to ready state and put CD high
                 state = `READY;
@@ -190,13 +187,13 @@ module TSC (
   end
 
 //POSEDGE ADC READY
-  always @(posedge adc_ready) begin
-    if (adc_request) begin
-      #1 //delay so the pulse doesn't disappear on the echo. TO BE REMOVED
+  always @(posedge RDY) begin
+    if (REQ) begin
+      #1 //delay so the pulse doesn't disappear on gktwave.
           
       //manage trigger_value
       if (state != `TRIGERED) begin  //if it hasn't been triggered already, check for a valid trigger
-        if (adc_data > TRIGVL) begin
+        if (DAT > TRIGVL) begin
           state = `TRIGERED;
           TRIGTM = timer; //capture time of trigger
           remaining_values = 5'h10; //set remaining adc values to 16 (handled by posedge clk)
@@ -204,10 +201,10 @@ module TSC (
       end
 
       //store data and move pointers around
-      ring_buffer[++write_ptr] = adc_data;
+      ring_buffer[++write_ptr] = DAT;
       read_ptr++;
 
-      adc_request = 0; //pull request down
+      REQ = 0; //pull request down
 
       ring_buffer_read_ptr <= ring_buffer[read_ptr]; //update watching register
       ring_buffer_write_ptr <= ring_buffer[write_ptr]; //update watching register

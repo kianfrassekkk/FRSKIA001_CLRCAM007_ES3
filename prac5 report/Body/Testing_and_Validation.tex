@@ -17,7 +17,7 @@ The test was run as one continuous test and several snippets of gktwave were tak
     \label{fig:testA}
 \end{figure}
 
-Firstly, a reset then start pulse are sent and the TSC module response by changing the state from STOP (0b000) to READY (0b001) and then to RUNNING (0b010).
+Firstly, a reset then start pulse are sent and the TSC module response by changing the state from \texttt{STOP} (0b000) to \texttt{READY} (0b001) and then to \texttt{RUNNING} (0b010).
 Once the module has entered running mode, it correctly requests data from the ADC module every rising clock edge, and the adc replies by pulling the ready line high and outputs a new byte on the data bus.
 In a real world implementation of this there would be a slight delay between the request being pulled high and the ready being pulled high.
 Next, the TSC module acknowledges the adc ready and resets the request line.
@@ -31,7 +31,7 @@ Again, in a real world implementation there would be a slight delay between thes
     \label{fig:testB}
 \end{figure}
 
-In RUNNING state, the adc value is written into the ring buffer.
+In \texttt{RUNNING} state, the adc value is written into the ring buffer.
 As it is shown in \fref{fig:testB}, the first byte the ADC module is 0xA0 which is correctly written into address 0 of the ring buffer, and the second byte 0x35 is written into address 1 of the ring buffer, etc.
 The byte at the read buffer pointer is unknown at it has not been written yet, and will only output a known value once a full loop of the ring buffer has been written.
 
@@ -60,7 +60,7 @@ As mentioned in \ssref{subsec:ring-buffer-writing}, a full loop has been written
 \end{figure}
 
 \fref{fig:testD} and \fref{fig:testD2} show an initial triggering and re-triggering of the TSC module respectively.
-At the point of triggering, the state correctly changes to TRIGGERED (0b011) and the remaining ADC values is set to 16 to indicate that there are 16 more adc values to be written into the ring buffer.
+At the point of triggering, the state correctly changes to \texttt{TRIGGERED} (0b011) and the remaining ADC values is set to 16 to indicate that there are 16 more adc values to be written into the ring buffer.
 The remaining values then starts counting down with every adc value saved to the ring buffer.
 Additionally, the TRGRTM for the initial trigger is correctly updated to the current value of the timer which is:
 
@@ -74,7 +74,7 @@ $\frac{trigger\ time - start\ time}{clock\ period} = \frac{612ps - 12ps }{4ps} =
     \label{fig:testE}
 \end{figure}
 
-Once there are no remaining values (the remaining value register has reached 0), the TSC module correctly changes state to IDLE (0b100), stops recording adc values, and pulls the TRD line to the HUB module high.
+Once there are no remaining values (the remaining value register has reached 0), the TSC module correctly changes state to \texttt{IDLE} (0b100), stops recording adc values, and pulls the TRD line to the HUB module high.
 
 \subsection{Starting or Transmitting From Idle}
 \begin{figure}[H]
@@ -90,9 +90,9 @@ Once there are no remaining values (the remaining value register has reached 0),
     \label{fig:testG}
 \end{figure}
 
-From the IDLE state, the TSC module can either transition back to RUNNING state or into SENDING state depending on the next command sent.
-In \fref{fig:testF}, the TSC module receives a start pulse, correctly transitions back to RUNNING (0b010) state, and correctly continues writing the ADC values into the ring buffer.
-In \fref{fig:testG}, the TSC module receives a SBF pulse, correctly transition into SENDING (0b101) state, and starts transmitting data with is shown in \ssref{subsec:starting-data-transmission}.
+From the \texttt{IDLE} state, the TSC module can either transition back to \texttt{RUNNING} state or into \texttt{SENDING} state depending on the next command sent.
+In \fref{fig:testF}, the TSC module receives a start pulse, correctly transitions back to \texttt{RUNNING} (0b010) state, and correctly continues writing the ADC values into the ring buffer.
+In \fref{fig:testG}, the TSC module receives a SBF pulse, correctly transition into \texttt{SENDING} (0b101) state, and starts transmitting data with is shown in \ssref{subsec:starting-data-transmission}.
 
 \subsection{Starting Data Transmission}\label{subsec:starting-data-transmission}
 \begin{figure}[H]
@@ -102,8 +102,8 @@ In \fref{fig:testG}, the TSC module receives a SBF pulse, correctly transition i
     \label{fig:testH}
 \end{figure}
 
-As the module transitions into SENDING (0b101) state, it immediately pulls CD low and SD high as required; it also sets the serial bit to WAIT (0xD).
-When the serial bit is WAIT, it is waiting for the next rising clock edge before it transitions into the TRANSMISSION\_START\_BIT (0xE) which occurs at 902 ps.
+As the module transitions into \texttt{SENDING} (0b101) state, it immediately pulls CD low and SD high as required; it also sets the serial bit to \texttt{WAIT} (0xD).
+When the serial bit is \texttt{WAIT}, it is waiting for the next rising clock edge before it transitions into the \texttt{TRANSMISSION\_\texttt{START\_BIT}} (0xE) which occurs at 902 ps.
 Once CD has been low and SD has been high for at least one rising clock edge, the first byte can be sent, which is explained in \ssref{subsec:byte-transmitting}.
 
 \subsection{Byte Transmitting}\label{subsec:byte-transmitting}
@@ -115,7 +115,7 @@ Once CD has been low and SD has been high for at least one rising clock edge, th
 \end{figure}
 
 The HUB module reads data on the rising clock edge, therefore the TSC module must write data on the falling clock edge, which is shown in \fref{fig:testI} by the SD line only changing with the falling edge clock.
-Additionally, each byte is preceded by a low START\_BIT (0xF).
+Additionally, each byte is preceded by a low \texttt{START\_BIT} (0xF).
 
 Little Endian encoding was chosen for sending the data on the SD line, so reading the data on the rising edge of the clock as the HUB module would give 0-1101-0000.
 This is equivalent to the value 0b0000-1011 = 0x0B which shows that the TSC module correctly sent the byte in the 19th address of the ring buffer.
@@ -129,4 +129,4 @@ This is equivalent to the value 0b0000-1011 = 0x0B which shows that the TSC modu
 \end{figure}
 
 \fref{fig:testH} shows that the first byte transmitted was at address 18, and \fref{fig:testJ} shows that the byte at address 17 has just been transmitted which means the full 32 byte ring buffer has been transmitted.
-The TSC module correctly recognises this by dropping the SD line low, pulling the CD line high, resetting the read pointer back to just in front of the write pointer, and finally setting the state back to READY (0b001), waiting to receive a start command once again.
+The TSC module correctly recognises this by dropping the SD line low, pulling the CD line high, resetting the read pointer back to just in front of the write pointer, and finally setting the state back to \texttt{READY} (0b001), waiting to receive a start command once again.
