@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.3.15)  29 APR 2024 11:30
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.3.15)  29 APR 2024 13:17
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -391,7 +391,11 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 28
 File: l3backend-pdftex.def 2024-01-04 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count305
 \l__pdf_internal_box=\box59
-) (Report.aux)
+) (Report.aux
+
+LaTeX Warning: Label `triggering' multiply defined.
+
+)
 \openout1 = `Report.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 18.
@@ -452,7 +456,7 @@ Underfull \hbox (badness 5652) in paragraph at lines 2--1
 []\OT1/ptm/m/n/10 A Field Pro-grammable Gate Ar-ray (FPGA) is an
  []
 
-<Figures/block_diagram_of_TSC.jpg, id=47, 554.07pt x 277.78781pt>
+<Figures/block_diagram_of_TSC.jpg, id=55, 554.07pt x 277.78781pt>
 File: Figures/block_diagram_of_TSC.jpg Graphic file (type jpg)
 <use Figures/block_diagram_of_TSC.jpg>
 Package pdftex.def Info: Figures/block_diagram_of_TSC.jpg  used on input line 18.
@@ -461,13 +465,33 @@ Package pdftex.def Info: Figures/block_diagram_of_TSC.jpg  used on input line 18
 
 
  <./Figures/block_diagram_of_TSC.jpg>]
-Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 76.
-LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 76.
+Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 82.
+LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 82.
  (C:\Users\kianf\AppData\Roaming\MiKTeX\tex/latex/psnfss\ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 )
 LaTeX Font Info:    Font shape `OT1/pcr/m/it' in size <5> not available
-(Font)              Font shape `OT1/pcr/m/sl' tried instead on input line 79.
+(Font)              Font shape `OT1/pcr/m/sl' tried instead on input line 85.
+
+Underfull \hbox (badness 1668) in paragraph at lines 113--117
+ \OT1/ptm/m/it/10 5) Trig-ger-ing: [][][] \OT1/ptm/m/n/10 The TSC mod-ule has a trig-ger value
+ []
+
+
+Overfull \hbox (27.66101pt too wide) in paragraph at lines 127--128
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (5.50964pt too wide) in paragraph at lines 131--132
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (44.27454pt too wide) in paragraph at lines 147--148
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
 ) (Body/Testing_and_Validation.tex) (Body/Conclusion.tex)
 
 ** Conference Paper **
@@ -480,28 +504,30 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[2
-
-] (Report.aux)
+[2] (Report.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
  ***********
+
+
+LaTeX Warning: There were multiply-defined labels.
+
 Package rerunfilecheck Info: File `Report.out' has not changed.
-(rerunfilecheck)             Checksum: C0FAA86F87CABD988A74E694513578F4;1891.
+(rerunfilecheck)             Checksum: 93EF3AF9AC13D376A129C4B482B7F8A6;2308.
  ) 
 Here is how much of TeX's memory you used:
- 13636 strings out of 474486
- 221027 string characters out of 5743755
- 1955542 words of memory out of 5000000
- 35697 multiletter control sequences out of 15000+600000
+ 13671 strings out of 474486
+ 221496 string characters out of 5743755
+ 1992542 words of memory out of 5000000
+ 35711 multiletter control sequences out of 15000+600000
  588726 words of font info for 92 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 84i,9n,85p,567b,1476s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 84i,9n,85p,567b,1512s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/kianf/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/kianf/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrb8a.pfb><C:/Users/kianf/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrr8a.pfb><C:/Users/kianf/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrro8a.pfb><C:/Users/kianf/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/kianf/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Report.pdf (2 pages, 194246 bytes).
+Output written on Report.pdf (2 pages, 204915 bytes).
 PDF statistics:
- 120 PDF objects out of 1000 (max. 8388607)
- 36 named destinations out of 1000 (max. 500000)
- 94 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 155 PDF objects out of 1000 (max. 8388607)
+ 57 named destinations out of 1000 (max. 500000)
+ 110 words of extra memory for PDF output out of 10000 (max. 10000000)
 
