@@ -19,16 +19,29 @@ module TSC (
     input wire reset,
     input wire start,
     input wire SBF,
+
     //watching register for test bench
+
+    //state machine watchers
     output reg[2:0] state_out,
+
+    //adc watchers
     output reg adc_request_out, 
     output reg adc_ready_out,
     output reg [7:0] adc_data_out,
+
+    //ring buffer watchers
     output reg [4:0] read_ptr_out,
     output reg [4:0] write_ptr_out,
     output reg [7:0] ring_buffer_read_ptr,
     output reg [7:0] ring_buffer_write_ptr,
+    
+    //trigger watchers
     output reg [4:0] remaining_values_out,
+    output reg adc_triggered_out,
+    output reg [31:0] TRIGTM_out,
+
+    //hub module watchers
     output reg TRD_out,
     output reg SD_out,
     output reg CD_out
@@ -69,7 +82,7 @@ module TSC (
   reg [2:0] state = `STOP; //current state for state machine
   reg [31:0] timer = 32'h0000; 
   reg [31:0] TRIGTM = 32'h0000; //time when triggered
-  parameter [7:0] TRIGVL = 210; //constant trigger value.
+  parameter [7:0] TRIGVL = 8'hc8; //constant trigger value.
   reg [4:0] remaining_values = 5'h00; //when triggered, this will count down from 16 to grab the following 16 adc values
 
   reg [7:0] ring_buffer [0:31]; 
@@ -99,6 +112,8 @@ module TSC (
       timer = 32'h0000;
       TRD = 1'b0;
       state = `RUNNING;
+
+      adc_triggered_out = 1'b0;
     end
   end
 
@@ -179,6 +194,8 @@ module TSC (
           state = `TRIGERED;
           TRIGTM = timer; //capture time of trigger
           remaining_values = 5'h10; //set remaining adc values to 16 (handled by posedge clk)
+
+          adc_triggered_out = 1'b0; //watcher output
         end
       end
 

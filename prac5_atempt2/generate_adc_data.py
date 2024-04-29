@@ -11,6 +11,6 @@ data_list[199] = random.randint(220, 255)
 with open("adc_data.csv", "w") as csvfile:
   # Write the data to the CSV file, one value per line
   for value in data_list:
-    csvfile.write(str(value) + "\n")
+    csvfile.write('0x%02x\n' % value)
 
 print("Data written to adc_data.csv")
