@@ -75,7 +75,8 @@ module TSC_tb;
 
   always begin
     #2 clk = ~clk; // Generate a clock signal with a period of 20ns
-    if (clk) $display("ring_buffer_read_ptr[%d] = %d\tring_buffer_write_ptr[%d] = %d",read_ptr_out,ring_buffer_read_ptr,write_ptr_out,ring_buffer_write_ptr);
+    if (clk) 
+    $display("ring_buffer_read_ptr[%d] = %d\tring_buffer_write_ptr[%d] = %d",read_ptr_out,ring_buffer_read_ptr,write_ptr_out,ring_buffer_write_ptr);
   end
 
   always @(posedge TRD_out) begin

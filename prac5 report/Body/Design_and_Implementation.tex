@@ -5,7 +5,7 @@ This was run on a MacBook Pro computer using Iverilog. Additionally, gtkwave was
 
 \subsection{TSC design overview}
 
-The TSC (Touch Sensing Controller) has a 3 bit state register, a 32-bit timer,
+The TSC (Trigger Surround Cache) has a 3 bit state register, a 32-bit timer,
 a 32-bit TRIGGER\_TM, and an internal ring buffer.
 It is connected to the ADC (Analog-to-Digital Converter)
 via a request (REQ), ready (RDY), and data (DAT) lines.
@@ -14,51 +14,95 @@ serial data (SD), and completed data (CD) registers and wires.
 
 
 \begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\columnwidth]{Figures/block_diagram_of_TSC}
-    \caption{Block diagram of the TSC}
-    \label{fig:block diagram of TSC}
+      \centering
+      \includegraphics[width=0.8\columnwidth]{Figures/block_diagram_of_TSC}
+      \caption{Block diagram of the TSC}
+      \label{fig:block diagram of TSC}
 \end{figure}
 
 There is also an accompanying TSC\_tb test bench which is used to initiate and test the TSC module.
 
 \subsection{CLock (clk)}
-A 1 THz clock signal is set up on clk wire in the TS\_tb test bench.
+A 250 MHz clock signal is set up on clk wire in the TS\_tb test bench.
 
 \subsubsection{State register}
-the st a register is a 3-bit register that has the folowing states:
+The state register is a 3-bit register that has the folowing states:
 \begin{itemize}
-    \item 000 Stop :
-          Initial state used to wait for reset pin has been triggered.
-    \item 001 ready
-          State that is enter on the reset pin rising edge and it waits for the start pin rising edge.
-    \item 010 Running
-          State that is entered from ready state once the start pin rising edge is pulled hight.
-    \item 011 Triggered
-          State entered when the value read by the ADC is
-          greater than the predetermined trigger value (TRIGVL).
-    \item 100 IDLE
-          This state is entered when a trigger event has occurred
-          and the TSC is waiting for the start pin or SPF pins rising edge.
-    \item 101 SENDING
-          This state is entered from the IDLE state when the SFB pin gos high. It indicates that data is being sent.
+      \item 000 Stop :
+            State when the machine is powered on and has not been reset yet.
+      \item 001 ready :
+            State that is enter on the reset pin rising edge and it waits for the start pin rising edge.
+      \item 010 Running :
+            State that is entered from ready or Idle state once the start pin rising edge is pulled hight.
+            It incrementing the timer and wright adc values to the ring buffer.
+      \item 011 Triggered :
+            State entered when the value read from the ADC is
+            greater than the predetermined trigger value (TRIGVL).
+            It capturing the next 16 values.
+      \item 100 IDLE ;
+            This state is entered when a trigger event has occurred
+            and the TSC is waiting for the start pin or SPF pins rising edge.
+      \item 101 SENDING :
+            This state is entered from the IDLE state when the SFB gose high. It indicates that data is being sent on the SD line.
 \end{itemize}
 
 
 \subsubsection{Timer}
 The timer is incremented on the rising edge of the clock. When
-a trigger even occurs the timer si save in the TRIGTM register which is outputted to the test bench.
+a trigger even occurs the timer is save in the TRIGTM register which is outputted to the test bench.
 The timer is reset if a transition into a running state occurs.
+To calculate the time store in the TRIGTM register the timer is multiplied by the clock period (4 ps).
+
+
 
 \subsubsection{Ring Buffer}
-The ring buffer is an array uf 32 8-bit register.
-The tail pin index is named write_prt and is Initial set to \'b11111
-and the tail index is named read_ptr and is initial set to 5\'b00000.
-the head index is named head_ptr and is initial set to 5'b00000.
-The 5 bit format for the head and tail index is used to iducate role offer at value 31.
-and it store the values created by the ADC.
+The ring buffer is used to store the values read by the ADC.
+It is made up of 32 8-bit registers stored in an array called ring\_buffer.
+The tail pointer is named write\_prt and is Initial set to 5'b11111.
+and the head pointer is named read\_ptr and is initial set to 5'b00000.
+The 5 bit format for the head and tail index is used to induce role offer at value 32 (32 just becomes 0).
+To add a new value to the ring buffer the write\_ptr is incremented and then the
+value is stored in the ring buffer at the write\_ptr index then read\_ptr is incremented.
+To read a value from the ring buffer the value at the read\_ptr index is read and the read\_ptr is incremented.
+this proses is repeated until the read\_prt = wright\_ptr. Indicates that all the values have been read.
 
-\subsubsection{how the TSC intervacec with the ADC}
+\subsubsection{How the TSC intervacec with the ADC}
+The ADC is initialized in the TSC module. this is creates the adc\_request, adc\_request,  adc\_ready, and DAT wires.
+The adc\_request line is to the main reset line this mean that the ADC is reset when the TSC\_td module pulls the reset pin hight.
+once the ADC is reset the adc\_ready line is pulled hight to indicate that the ADC is ready to send data.
+When the TSC module detects the adc\_ready line is hight and the TSC is in the running state.
+The TSC will pull the adc\_request line hight on  the posedge of the clk line for 1 ps to request data from the ADC. This can be seen in the two code section below.
+
+\begin{lstlisting}[language=Verilog, caption={Code for storing data and moving pointers i the posedge adc\_ready}]
+      always @(posedge adc_ready) begin
+            if (adc_request) begin
+            #1 //delay so the pulse doesn't disappear on the echo. TO BE REMOVED
+          
+            //manage trigger_value
+            //... the trigger code is here
+
+      //store data and move pointers around
+      ring_buffer[++write_ptr] = adc_data;
+      read_ptr++;
+
+      adc_request = 0; //pull request down
+    end
+  end
+\end{lstlisting}
+
+\begin{lstlisting}[language=Verilog, caption={Code for requesting data from the ADC on posedge of the clock when in RUNNING state}]
+      `RUNNING: begin
+        timer++;
+        if (~ adc_request)
+          adc_request = 1; //request new adc value (handled with posedge adc_ready)
+      end
+\end{lstlisting}
+
+
+
+
+
+
 
 
 

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.3.15)  28 APR 2024 21:05
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.3.15)  29 APR 2024 11:30
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -391,8 +391,7 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 28
 File: l3backend-pdftex.def 2024-01-04 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count305
 \l__pdf_internal_box=\box59
-)
-No file Report.aux.
+) (Report.aux)
 \openout1 = `Report.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 18.
@@ -413,6 +412,7 @@ LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 18.
 LaTeX Font Info:    ... okay on input line 18.
 LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 18.
 LaTeX Font Info:    ... okay on input line 18.
+
 -- Lines per column: 56 (exact).
 (C:\Users\kianf\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
@@ -440,6 +440,7 @@ Package caption Info: listings package is loaded.
 Package caption Info: End \AtBeginDocument code.
 \c@lstlisting=\count312
 Package hyperref Info: Link coloring ON on input line 18.
+ (Report.out) (Report.out)
 \@outlinefile=\write3
 \openout3 = `Report.out'.
 
@@ -451,74 +452,22 @@ Underfull \hbox (badness 5652) in paragraph at lines 2--1
 []\OT1/ptm/m/n/10 A Field Pro-grammable Gate Ar-ray (FPGA) is an
  []
 
-
-Underfull \hbox (badness 3826) in paragraph at lines 8--14
-\OT1/ptm/m/n/10 reg-is-ter, a 32-bit timer, a 32-bit TRIG-GER[]-TM, and
- []
-
-
-Underfull \hbox (badness 3460) in paragraph at lines 8--14
-\OT1/ptm/m/n/10 an in-ter-nal ring buffer. It is con-nected to the ADC
- []
-
-<Figures/block_diagram_of_TSC.jpg, id=3, 554.07pt x 277.78781pt>
+<Figures/block_diagram_of_TSC.jpg, id=47, 554.07pt x 277.78781pt>
 File: Figures/block_diagram_of_TSC.jpg Graphic file (type jpg)
 <use Figures/block_diagram_of_TSC.jpg>
 Package pdftex.def Info: Figures/block_diagram_of_TSC.jpg  used on input line 18.
 (pdftex.def)             Requested size: 201.60077pt x 101.07167pt.
-Body/Design_and_Implementation.tex:55: Missing $ inserted.
-<inserted text> 
-                $
-l.55 The tail pin index is named write_
-                                       prt and is Initial set to \'b11111
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
+[1{C:/Users/kianf/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{C:/Users/kianf/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc}
 
 
-LaTeX Warning: Command \' invalid in math mode on input line 55.
-
-Body/Design_and_Implementation.tex:55: Please use \mathaccent for accents in math mode.
-\add@accent ... \let \ignorespaces \relax \accent 
-                                                  #1 #2\egroup \ifmmode \els...
-l.55 ... named write_prt and is Initial set to \'b
-                                                  11111
-I'm changing \accent to \mathaccent here; wish me luck.
-(Accents are not the same in formulas as they are in text.)
-
-
-LaTeX Warning: Command \' invalid in math mode on input line 56.
-
-Body/Design_and_Implementation.tex:56: Please use \mathaccent for accents in math mode.
-\add@accent ... \let \ignorespaces \relax \accent 
-                                                  #1 #2\egroup \ifmmode \els...
-l.56 ... named read_ptr and is initial set to 5\'b
-                                                  00000.
-I'm changing \accent to \mathaccent here; wish me luck.
-(Accents are not the same in formulas as they are in text.)
-
-Body/Design_and_Implementation.tex:60: Missing $ inserted.
-<inserted text> 
-                $
-l.60 
-     
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 54--60
- \OT1/ptm/m/it/10 3) Ring Buffer: [][][] \OT1/ptm/m/n/10 The ring buffer is an ar-ray
- []
-
-
-Underfull \hbox (badness 6741) in paragraph at lines 54--60
-\OT1/ptm/m/n/10 uf 32 8-bit reg-is-ter. The tail pin in-dex is named
- []
-
-
-Overfull \hbox (891.54692pt too wide) in paragraph at lines 54--60
-\OT1/ptm/m/n/10 write$[]\OML/cmm/m/it/10 rtandisInitialsetto[]\OT1/cmr/m/n/10 11111\OML/cmm/m/it/10 andthetailindexisnamedread[]trandisinitialsetto\OT1/cmr/m/n/10 5[]00000\OML/cmm/m/it/10 :theheadindexisnamedhead[]trandisinitialsetto\OT1/cmr/m/n/10 5[]\OML/cmm/m/it/10 b\OT1/cmr/m/n/10 00000\OML/cmm/m/it/10 :The\OT1/cmr/m/n/10 5\OML/cmm/m/it/10 bitformatfortheheadandtailindexisusedtoiducateroleofferatvalue\OT1/cmr/m/n/10 31\OML/cmm/m/it/10 :anditstorethevaluescreatedbytheADC:$ 
- []
-
+ <./Figures/block_diagram_of_TSC.jpg>]
+Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 76.
+LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 76.
+ (C:\Users\kianf\AppData\Roaming\MiKTeX\tex/latex/psnfss\ot1pcr.fd
+File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
+)
+LaTeX Font Info:    Font shape `OT1/pcr/m/it' in size <5> not available
+(Font)              Font shape `OT1/pcr/m/sl' tried instead on input line 79.
 ) (Body/Testing_and_Validation.tex) (Body/Conclusion.tex)
 
 ** Conference Paper **
@@ -531,39 +480,28 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[1{C:/Users/kianf/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{C:/Users/kianf/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc}
+[2
 
-
- <./Figures/block_diagram_of_TSC.jpg>] (Report.aux)
+] (Report.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
  ***********
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
-
-Package rerunfilecheck Warning: File `Report.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `Report.out':
-(rerunfilecheck)             Before: <no file>
-(rerunfilecheck)             After:  992DCE6D3BA23722F4578DAF7CEC8E3B;1891.
+Package rerunfilecheck Info: File `Report.out' has not changed.
+(rerunfilecheck)             Checksum: C0FAA86F87CABD988A74E694513578F4;1891.
  ) 
 Here is how much of TeX's memory you used:
- 13074 strings out of 474486
- 214776 string characters out of 5743755
- 1948542 words of memory out of 5000000
- 35172 multiletter control sequences out of 15000+600000
- 587079 words of font info for 86 fonts, out of 8000000 for 9000
+ 13636 strings out of 474486
+ 221027 string characters out of 5743755
+ 1955542 words of memory out of 5000000
+ 35697 multiletter control sequences out of 15000+600000
+ 588726 words of font info for 92 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 84i,9n,85p,567b,528s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<C:/Users/kianf/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/kianf/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Users/kianf/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/kianf/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/kianf/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/kianf/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Report.pdf (1 page, 181163 bytes).
+ 84i,9n,85p,567b,1476s stack positions out of 10000i,1000n,20000p,200000b,200000s
+<C:/Users/kianf/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/kianf/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrb8a.pfb><C:/Users/kianf/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrr8a.pfb><C:/Users/kianf/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrro8a.pfb><C:/Users/kianf/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/kianf/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
+Output written on Report.pdf (2 pages, 194246 bytes).
 PDF statistics:
- 58 PDF objects out of 1000 (max. 8388607)
- 14 named destinations out of 1000 (max. 500000)
- 6 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 120 PDF objects out of 1000 (max. 8388607)
+ 36 named destinations out of 1000 (max. 500000)
+ 94 words of extra memory for PDF output out of 10000 (max. 10000000)
 
